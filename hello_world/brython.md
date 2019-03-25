@@ -1,4 +1,7 @@
 ---
+layout: default
+title: Hello From Brython!
+---
 <body onload="brython()">
 
     <script type="text/python">
