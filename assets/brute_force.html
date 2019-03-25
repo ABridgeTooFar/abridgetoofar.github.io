@@ -1,23 +1,26 @@
- <html>
-        <head>
-          <script type="text/javascript"
-              src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.7.1/brython_stdlib.js">
-          </script>
-        </head>
 
-        <body onload="brython()">
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="description" content="Hello world demo written in Brython www.brython.info">
+<meta name="keywords" content="Python,Brython">
+<meta charset="iso-8859-1">
+<title>Hello world</title>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.7.1/brython_stdlib.js"</script>
+</head>
 
-            <script type="text/python">
-            from browser import document, alert
+<body onload="brython(1)">
 
-            def echo(event):
-                alert(document["zone"].value)
+<script type="text/python">
+from browser import document, alert
 
-            document["mybutton"].bind("click", echo)
-            </script>
+def echo(ev):
+    alert("Hello {} !".format(document["zone"].value))
 
-            <input id="zone"><button id="mybutton">click !</button>
+document["test"].bind("click", echo)
+</script>
+<p>Your name is : <input id="zone" autocomplete="off">
+<button id="test">clic !</button>
+</body>
 
-        </body>
-
-    </html>
+</html>
