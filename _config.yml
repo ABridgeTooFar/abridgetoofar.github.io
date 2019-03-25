@@ -1,1 +1,12 @@
+---
 theme: jekyll-theme-tactile
+name: A Brython Sandbox
+description: Deploy and test python algorithms using a sandboxed browser-based environment
+url: https://abridgetoofar.github.io
+repository: https://github.com/ABridgeTooFar/abridgetoofar.github.io
+
+exclude:
+- .gitignore
+- .jekyll-cache
+- CNAME
+- readme.md
