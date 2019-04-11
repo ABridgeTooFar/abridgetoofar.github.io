@@ -1,6 +1,6 @@
 ## Welcome to my GitHub Page
 
-The main purpose of this page is to maintain a library of browser-enabled python scripts capable of executing in sandboxed environments.
+The main purpose of this page is to maintain a library of browser-enabled python scripts capable of executing in sandboxed environments. Not all of these examples work in Internet Explorer... I recommend using the Chromium browser for best results.
 
 ### Sample code
 
