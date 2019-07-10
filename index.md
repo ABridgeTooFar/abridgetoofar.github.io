@@ -5,6 +5,7 @@ The main purpose of this page is to maintain a library of browser-enabled python
 ### Sample code
 
 - [Hello, Brython](hello_world\brython.html)
+- [Simple Input/Output](inout\brython.html)
 - more to come
 
 ### Browse the source
