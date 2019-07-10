@@ -6,7 +6,7 @@ title: In Click Out!
 from browser import document
 
 def echo(event):
-    document["result"].innerHTML='<textarea rows="4" cols="100%">'+document["zone"].value+'</textarea>'
+    document["result"].innerHTML='<textarea readonly rows="4" cols="100%">'+document["zone"].value+'</textarea>'
 
 document["mybutton"].bind("click", echo)
 </script>
