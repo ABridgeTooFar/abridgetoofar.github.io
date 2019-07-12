@@ -40,7 +40,7 @@ def appendHandler(event):
     if not '/textarea' in document["zone"].value:
         lines = append(document["zone"].value)
         document["enoz"].value=(discard[lines] if lines in discard else "")
-        document["zone"]=""
+        document["zone"].value=""
         showout()
     document["zone"].focus()
 
