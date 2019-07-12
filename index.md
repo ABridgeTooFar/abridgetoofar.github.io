@@ -7,6 +7,7 @@ The main purpose of this page is to maintain a library of browser-enabled python
 - [Hello, Brython](hello_world\brython.html)
 - [Simple Input/Output](inout\brython.html)
 - [Undo/Redo](remember\brython.html)
+- [Hello, Bokeh](hello_bokeh\brython.html)
 - more to come
 
 ### Browse the source
