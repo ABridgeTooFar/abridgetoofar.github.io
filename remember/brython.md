@@ -13,15 +13,16 @@ def showout():
 
 def append(value):
     lines = len(keep)
-    discard[lines]=value
-    keep.append(value)
-    lines += 1
-    showout()
+    if len(value)>0:
+       discard[lines]=value
+       keep.append(value)
+       lines += 1
+       showout()
     return lines
 
 def undo():
     rv = []
-    if any(keep):
+    if len(keep)>0:
         rv.append(keep.pop(-1))
         showout()
     return rv
@@ -46,14 +47,14 @@ def appendHandler(event):
 
 def undoHandler(event):
     rv = undo()
-    if any(rv):
+    if len(rv)>0:
         document["zone"].value=document["enoz"].value="".join(rv)
         showout()
     document["zone"].focus()
 
 def redoHandler(event):
     rv = redo()
-    if any(rv):
+    if len(rv)>0:
         document["enoz"].value="".join(rv)
         document["zone"].value=""
         showout()
