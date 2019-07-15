@@ -17,38 +17,25 @@ title: Stop Watching Me!
 <script type="text/python">
 import time
 from browser import document as doc
-from browser import timer
+from browser.timer import request_animation_frame as raf
+from browser.timer import cancel_animation_frame as caf
 
-_timer = None
+id = None
 counter = 0
 
 def show():
     doc['_timer'].text = '%.2f' %(time.time()-counter)
 
-def start_timer(ev):
-    global _timer,counter
-    if _timer is None:
-        counter = time.time()
-        _timer = timer.set_interval(show,10)
-        doc['start'].text = 'Hold'
-    elif _timer == 'hold': # restart
-        # restart timer
-        counter = time.time()-float(doc['_timer'].text)
-        _timer = timer.set_interval(show,10)
-        doc['start'].text = 'Hold'
-    else: # hold
-        timer.clear_interval(_timer)
-        _timer = 'hold'
-        doc['start'].text = 'Restart'
+def animate(ev):
+    global id
+    counter = time.time()
+    id = raf(animate)
+    show()
 
 def stop_timer(ev):
-    global _timer
-    timer.clear_interval(_timer)
-    _timer = None
-    t = 0
-    doc['_timer'].text = '%.2f' %0
-    doc['start'].text = 'Start'
+    global id
+    caf(id)
 
-doc['start'].bind('click', start_timer)
+doc['start'].bind('click', animate)
 doc['stop'].bind('click', stop_timer)
 </script>
