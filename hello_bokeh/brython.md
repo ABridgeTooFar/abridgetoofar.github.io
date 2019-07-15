@@ -30,8 +30,8 @@ p.line({"x": lx, "y": ly,
     "line_width": 2
 })
 p.y_range=ydr
-p.yaxis.axis_line_color = "green"
-p.xaxis.axis_line_color = "blue"
+#p.yaxis.axis_line_color = "green"
+#p.xaxis.axis_line_color = "blue"
 
 # show the plot
 mydiv = document['myplot']
