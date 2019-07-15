@@ -11,19 +11,22 @@ title: Stop Watching Me!
 <script type="text/python">
 from browser import document
 import time
+import math
+import datetime
 
-counter = time.time()
+counter = datetime.now()
 
 def show():
-    elapsed = time.time() - counter
+    global counter
+    elapsed = datetime.now() - counter
     document["timer"].innerHTML = "<p>DEBUG:%f</p>"%elapsed
     
 def start_hold_timer(ev):
     show()
 
 def stop_timer(ev):
-    global counter;
-    counter = time.time()
+    global counter
+    counter = datetime.now()
 
 document["start"].bind("click", start_hold_timer)
 document["stop"].bind("click", stop_timer)
