@@ -8,7 +8,7 @@ The main purpose of this page is to maintain a library of browser-enabled python
 - [Simple Input/Output](inout\brython.html)
 - [Undo/Redo](remember\brython.html)
 - [Hello, Bokeh](hello_bokeh\brython.html)
-- more to come
+- [Stop-watch](interval\brython.html)
 
 ### Browse the source
 
