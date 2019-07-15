@@ -10,19 +10,20 @@ title: Stop Watching Me!
 <br><button id="stop">Stop</button>
 </td>
 <td>
-<div id="timer" style="background-color:black;color:#0F0;padding:15px;font-family:courier;font-weight:bold;font-size:23px;">0.00</div>
+<div id="timer" style="background-color:black;color:#0F0;padding:15px;font-family:courier;font-weight:bold;font-size:23px;"><p>0.00</p></div>
 </td>
 </tr>
 </tbody></table>
+
 <script type="text/python">
 from browser import document
 
 id = None
-counter = 0
+counter = 0.0
 
 def show(o):
-    counter = counter + 1
-    document["timer"].innerHTML = "%.2f"%(counter)
+    counter = counter + 1.0
+    document["timer"].innerHTML = "<p>%.2f</p>"%(counter)
 
 document["start"].bind("click", show)
 </script>
