@@ -57,10 +57,11 @@ p.line({"x": lx, "y": ly,
     "line_color": "#666699",
     "line_width": 2
 })
+p.y_range=ydr
 
 # show the plot
 mydiv = document['myplot']
-thydiv = document['thyplot']
+#thydiv = document['thyplot']
 plt.show(p, mydiv.elt)
-Bokeh.Plotting.show(plot,thydiv.elt);
+#Bokeh.Plotting.show(plot,thydiv.elt);
 </script>
