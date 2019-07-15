@@ -22,7 +22,7 @@ ly = [ v * 0.5 + 3.0 for v in lx]
 ydr = Bokeh.Range1d.new({ "start": -0.5, "end": 20.5 });
 
 # make the plot and add some tools
-tools = "pan,crosshair,wheel_zoom,box_zoom,reset,save"
+tools = "pan,crosshair,zoom_in,zoom_out,reset,save"
 p = plt.figure({'title': "Simple Line Graph", 'tools': tools})
 #add a Line glyph
 p.line({"x": lx, "y": ly,
