@@ -23,8 +23,8 @@ from browser.timer import cancel_animation_frame as caf
 id = None
 counter = 0
 
-def show():
-    doc['_timer'].text = '%.2f' %(time.time()-counter)
+def show(o):
+    doc["_timer"].text = "%.2f"%(time.time()-counter)
 
 def animate(ev):
     global id
@@ -36,6 +36,6 @@ def stop_timer(ev):
     global id
     caf(id)
 
-doc['start'].bind('click', animate)
-doc['stop'].bind('click', stop_timer)
+doc["start"].bind("click", show)
+doc["stop"].bind("click", stop_timer)
 </script>
