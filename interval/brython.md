@@ -10,32 +10,19 @@ title: Stop Watching Me!
 <br><button id="stop">Stop</button>
 </td>
 <td>
-<div id="_timer" style="background-color:black;color:#0F0;padding:15px;font-family:courier;font-weight:bold;font-size:23px;">0.00</div>
+<div id="timer" style="background-color:black;color:#0F0;padding:15px;font-family:courier;font-weight:bold;font-size:23px;">0.00</div>
 </td>
 </tr>
 </tbody></table>
 <script type="text/python">
-import time
-from browser import document as doc
-from browser.timer import request_animation_frame as raf
-from browser.timer import cancel_animation_frame as caf
+from browser import document
 
 id = None
 counter = 0
 
 def show(o):
-    doc["_timer"].innerHTML = "%.2f"%(time.time()-counter)
+    counter = counter + 1
+    document["timer"].innerHTML = "%.2f"%(counter)
 
-def animate(ev):
-    global id
-    counter = time.time()
-    id = raf(animate)
-    show()
-
-def stop_timer(ev):
-    global id
-    caf(id)
-
-doc["start"].bind("click", show)
-doc["stop"].bind("click", stop_timer)
+document["start"].bind("click", show)
 </script>
