@@ -24,7 +24,7 @@ id = None
 counter = 0
 
 def show(o):
-    doc["_timer"].text = "%.2f"%(time.time()-counter)
+    doc["_timer"].innerHTML = "%.2f"%(time.time()-counter)
 
 def animate(ev):
     global id
