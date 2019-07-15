@@ -14,12 +14,12 @@ import time
 import math
 import datetime
 
-counter = datetime.now()
+counter = 0
 
 def show():
     global counter
-    elapsed = datetime.now() - counter
-    document["timer"].innerHTML = "<p>DEBUG:%f</p>"%elapsed
+    counter = counter + 1
+    document["timer"].innerHTML = "<p>DEBUG%i</p>"%counter
     
 def start_hold_timer(ev):
     show()
