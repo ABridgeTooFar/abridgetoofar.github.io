@@ -17,24 +17,33 @@ title: Stop Watching Me!
 
 <script type="text/python">
 from browser import document
+from browser.timer import request_animation_frame as raf
+from browser.timer import cancel_animation_frame as caf
 import time
 import math
 from datetime import datetime
 
+id = None
 counter = datetime.now()
 
 def show():
     global counter
     elapsed = datetime.now() - counter
-    document["timer"].innerHTML = "<p>%.2f</p>"%elapsed.total_seconds()
-    
+    document["timer"].innerHTML = "<p>%.2f</p>"%(elapsed.total_seconds())
+
 def start_hold_timer(ev):
     global counter
-    counter = datetime.now()
-
-def stop_timer(ev):
+    global id
+    if id is None:
+        counter = datetime.now()
+    id = raf(start_hold_timer)
     show()
 
+def stop_timer(ev):
+    global id
+    caf(id)
+    id = None
+    
 document["start"].bind("click", start_hold_timer)
 document["stop"].bind("click", stop_timer)
 </script>
