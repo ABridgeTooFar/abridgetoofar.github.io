@@ -2,7 +2,7 @@
 layout: default
 title: Stop Watching Me!
 ---
-<h1>Example of a Interval-based Stop-watch</h1>
+<h1>Example of a Stop-watch using Animation Frame Technique</h1>
 <table cellpadding="10">
 <tbody><tr>
 <td style="width:100px;">
@@ -45,6 +45,7 @@ def start_hold_timer(ev):
 
 def stop_timer(ev):
     global id
+    global timermode
     if not (id is None):
         caf(id)
         id = None
