@@ -12,7 +12,7 @@ title: Stop Watching Me!
 from browser import document
 import time
 import math
-import datetime
+from datetime import datetime
 
 counter = 0
 
