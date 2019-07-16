@@ -14,19 +14,19 @@ import time
 import math
 from datetime import datetime
 
-counter = 0
+counter = datetime.now()
 
 def show():
     global counter
-    counter = counter + 1
-    document["timer"].innerHTML = "<p>DEBUG%i</p>"%counter
+    elapsed = datetime.now() - counter
+    document["timer"].innerHTML = "<p>%.2f</p>"%elapsed.total_seconds()
     
 def start_hold_timer(ev):
-    show()
+    counter = datetime.now()
 
 def stop_timer(ev):
     global counter
-    counter = datetime.now()
+    show()
 
 document["start"].bind("click", start_hold_timer)
 document["stop"].bind("click", stop_timer)
