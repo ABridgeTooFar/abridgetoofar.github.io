@@ -23,41 +23,44 @@ import time
 import math
 from datetime import datetime
 
-id = None
-counter = datetime.now()
-timerInstances = 0
 stopRequested = False
+timerInstances = 0
+counter = datetime.now()
+id = None
 
-def show():
+def TimerUpdate(o):
+    global stopRequested
+    global id
     global counter
-    elapsed = datetime.now() - counter
-    document["timer"].innerHTML = "%0.2f"%(elapsed.total_seconds())
-
-def start_hold_timer(ev):
+    
+    if stopRequested:
+        id = None
+    else:
+        elapsed = datetime.now() - counter
+        document["timer"].innerHTML = "%0.2f"%(elapsed.total_seconds())
+        id = raf(TimerUpdate)
+        
+def StartHandler(ev):
     global stopRequested
     global timerInstances
     global id
     global counter
     
-    if id is None:
-        timerInstances += 1
-        if timerInstances==1:
-            counter = datetime.now()
-                
-    if timerInstances>1 or stopRequested:
-        timerInstances -= 1
-    else:
-        id = raf(start_hold_timer)
-        show()
-        
-    if timerInstances<1:
-        id = None
-        stopRequested=False
-        
-def stop_timer(ev):
+    stopRequested = False
+    if timerInstances == 0 and (id is None):
+        timerInstances = 1
+        counter = datetime.now()
+        TimerUpdate(0):
+    
+def StopHandler(ev):
     global stopRequested
+    if not (id is None):
+        caf(id)
+        id = None
+    if timerInstances>1:
+        timerInstances -= 1
     stopRequested = True
     
-document["start"].bind("click", start_hold_timer)
-document["stop"].bind("click", stop_timer)
+document["start"].bind("click", StartHandler)
+document["stop"].bind("click", StopHandler)
 </script>
