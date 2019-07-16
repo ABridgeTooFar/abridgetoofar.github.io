@@ -40,21 +40,20 @@ def start_hold_timer(ev):
     global counter
     
     if id is None:
-        timerinstances += 1
-        if timerinstances==1:
+        timerInstances += 1
+        if timerInstances==1:
             counter = datetime.now()
                 
-    if timerinstances>1 or stopRequested:
-        timerinstances -= 1
+    if timerInstances>1 or stopRequested:
+        timerInstances -= 1
     else:
         id = raf(start_hold_timer)
         show()
         
-    if timerinstances<1:
+    if timerInstances<1:
         id = None
         stopRequested=False
-            
-    
+        
 def stop_timer(ev):
     global stopRequested
     stopRequested = True
