@@ -32,35 +32,37 @@ def TimerUpdate(o):
     global stopRequested
     global id
     global counter
-    
+
     if stopRequested:
         id = None
     else:
         elapsed = datetime.now() - counter
         document["timer"].innerHTML = "%0.2f"%(elapsed.total_seconds())
         id = raf(TimerUpdate)
-        
+
 def StartHandler(ev):
     global stopRequested
     global timerInstances
     global id
     global counter
-    
+
     stopRequested = False
-    if timerInstances == 0 and (id is None):
+    if (timerInstances == 0) and (id is None):
         timerInstances = 1
         counter = datetime.now()
-        TimerUpdate(0):
-    
+        id = raf(TimerUpdate)
+
 def StopHandler(ev):
     global stopRequested
+    global timerInstances
+    global id
     if not (id is None):
         caf(id)
         id = None
     if timerInstances>1:
         timerInstances -= 1
     stopRequested = True
-    
+
 document["start"].bind("click", StartHandler)
 document["stop"].bind("click", StopHandler)
 </script>
