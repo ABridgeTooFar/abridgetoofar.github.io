@@ -25,24 +25,30 @@ from datetime import datetime
 
 id = None
 counter = datetime.now()
+timermode = 0
 
 def show():
     global counter
     elapsed = datetime.now() - counter
-    document["timer"].innerHTML = "<p>%.2f</p>"%(elapsed.total_seconds())
+    document["timer"].innerHTML = "%0.2f"%(elapsed.total_seconds())
 
 def start_hold_timer(ev):
-    global counter
     global id
+    global timermode
+    global counter
     if id is None:
+        timermode = 1
         counter = datetime.now()
-    id = raf(start_hold_timer)
-    show()
+    if timermode>0:
+        id = raf(start_hold_timer)
+        show()
 
 def stop_timer(ev):
     global id
-    caf(id)
-    id = None
+    if not (id is None):
+        caf(id)
+        id = None
+    timermode = 0
     
 document["start"].bind("click", start_hold_timer)
 document["stop"].bind("click", stop_timer)
