@@ -59,7 +59,7 @@ def StopHandler(ev):
     if not (id is None):
         caf(id)
         id = None
-    if timerInstances>1:
+    if timerInstances>0:
         timerInstances -= 1
     stopRequested = True
 
