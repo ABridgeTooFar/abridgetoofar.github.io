@@ -32,6 +32,7 @@ def draw(theta0,nx):
     lx = []
     theta = theta0
     delta = (360.0/nx)%360.0    
+    falseTheta = 0 
     for x in range(nx):
         if falseTheta == 0:
             theta += delta
