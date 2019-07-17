@@ -9,6 +9,7 @@ The main purpose of this page is to maintain a library of browser-enabled python
 - [Undo/Redo](remember\brython.html)
 - [Hello, Bokeh](hello_bokeh\brython.html)
 - [Stop-watch](interval\brython.html)
+- [One RPM](onerpm\brython.html)
 
 ### Browse the source
 
