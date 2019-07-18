@@ -16,7 +16,9 @@ plt = Bokeh.Plotting
 # create some data and a ColumnDataSource
 lx = [-0.5 + i * (20.5 - -0.5)/10.0 for i in range(10) ]
 ly = [ v * 0.5 + 3.0 for v in lx]
-
+source = Bokeh.ColumnDataSource.new({
+    'data': {'x': lx, 'y': ly}
+})
 # create some ranges for the plot
 #xdr = Bokeh.Range1d.new({ "start": lx[0], "end": lx[-1] });
 ydr = Bokeh.Range1d.new({ "start": -0.5, "end": 20.5 });
@@ -25,7 +27,7 @@ ydr = Bokeh.Range1d.new({ "start": -0.5, "end": 20.5 });
 tools = "pan,crosshair,zoom_in,zoom_out,reset,save"
 p = plt.figure({'title': "Simple Line Graph", 'tools': tools})
 #add a Line glyph
-p.line({"x": lx, "y": ly,
+p.line({"x": "x", "y": "y", "source" : source,
     "line_color": "#666699",
     "line_width": 2
 })
