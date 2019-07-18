@@ -75,6 +75,7 @@ def UpdateFig1(theta0):
     #update the source data
     #source.data = {"x": lx, "y": ly}
     source.data.y = ly
+    source.change.emit()
     
 #animation/timed updates
 def TimerUpdate(o):
