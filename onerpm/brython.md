@@ -46,7 +46,7 @@ id = None
 Bokeh = window.Bokeh
 plt = Bokeh.Plotting
 source = Bokeh.ColumnDataSource.new({
-    'data': {'x': [x * 360.0/nx for x in range(nx)], 'y': [0.0]*nx }
+    'data': {'x': [x * 360.0/nx for x in range(nx+1)], 'y': [0.0]*(nx+1) }
 })
 # create some ranges for the plot
 xdr = Bokeh.Range1d.new({ "start": -0.01, "end": 360.01 });
@@ -73,7 +73,7 @@ def UpdateFig1(theta0):
     lx = [x * delta for x in range(nx)]
     ly = [ 10.0 * math.sin(math.radians(theta0+dTheta)) for dTheta in lx]
     #update the source data
-    source.data = {"x": lx, "y": ly}
+    #source.data = {"x": lx, "y": ly}
     
 #animation/timed updates
 def TimerUpdate(o):
