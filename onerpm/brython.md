@@ -46,7 +46,7 @@ id = None
 Bokeh = window.Bokeh
 plt = Bokeh.Plotting
 source = Bokeh.ColumnDataSource.new({
-    'data': {'x': [], 'y': []}
+    'data': {'x': [x * 360.0/nx for x in range(nx)], 'y': [0.0]*nx }
 })
 # create some ranges for the plot
 xdr = Bokeh.Range1d.new({ "start": -0.01, "end": 360.01 });
