@@ -74,6 +74,7 @@ def UpdateFig1(theta0):
     ly = [ 10.0 * math.sin(math.radians(theta0+dTheta)) for dTheta in lx]
     #update the source data
     #source.data = {"x": lx, "y": ly}
+    source.data.y = ly
     
 #animation/timed updates
 def TimerUpdate(o):
