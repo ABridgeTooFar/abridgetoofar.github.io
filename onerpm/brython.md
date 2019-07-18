@@ -70,10 +70,10 @@ def UpdateFig1(theta0):
     global nx
     # generate the source data
     delta = (360.0/nx)%360.0    
-    lx = [x * delta for x in range(nx)]
+    lx = [x * delta for x in range(nx+1)]
     ly = [ 10.0 * math.sin(math.radians(theta0+dTheta)) for dTheta in lx]
     #update the source data
-    #source.data = {"x": lx, "y": ly}
+    #source.data.x = lx
     source.data.y = ly
     source.change.emit()
     
