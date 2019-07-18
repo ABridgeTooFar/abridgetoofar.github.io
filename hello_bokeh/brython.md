@@ -27,7 +27,7 @@ ydr = Bokeh.Range1d.new({ "start": -0.5, "end": 20.5 });
 tools = "pan,crosshair,zoom_in,zoom_out,reset,save"
 p = plt.figure({'title': "Simple Line Graph", 'tools': tools})
 #add a Line glyph
-p.line({"x": "x", "y": "y", "source" : source,
+p.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : source,
     "line_color": "#666699",
     "line_width": 2
 })
