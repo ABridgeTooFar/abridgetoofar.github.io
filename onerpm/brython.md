@@ -18,6 +18,24 @@ theta0 = 0.0
 falseTheta = 0 
 nx = 10
 
+def UpdateTheta0(delta):
+    global theta0,falseTheta
+    #    
+    delta = delta % 360.0 #make sure delta is positive and modulo 360
+    if falseTheta == 0:
+        theta0 += delta
+    else:
+        theta0 -= delta
+    #fi
+    if theta0>360.0:
+        theta0 = 360.0 - (theta0%360.0)
+        falseTheta = 360
+    if theta0<0.0:
+        theta0 = - (theta0%-360.0)
+        falseTheta = 0
+    #fi
+    return ((360.0 - theta0) if falseTheta else theta0)
+    
 # animation/timer state variables
 stopRequested = False
 timerInstances = 0
@@ -27,55 +45,42 @@ id = None
 # 'importing' the library
 Bokeh = window.Bokeh
 plt = Bokeh.Plotting
+source = Bokeh.ColumnDataSource.new({
+    'data': {'x': [], 'y': []}
+})
+# create some ranges for the plot
+xdr = Bokeh.Range1d.new({ "start": -0.01, "end": 360.01 });
+ydr = Bokeh.Range1d.new({ "start": -10.01, "end": 10.01 });
 
-def draw(theta0,nx):
-    lx = []
-    theta = theta0
+# make the plot and add some tools
+tools = "pan,zoom_in,zoom_out,reset"
+fig1 = plt.figure({'title': "Sine wave (1 RPM)", 'tools': tools})
+fig1.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : source,
+    "line_color": "#666699",
+    "line_width": 2
+})
+fig1.x_range=xdr
+fig1.y_range=ydr
+
+# show the plot
+mydiv = document['myplot']
+plt.show(fig1, mydiv.elt)
+
+def UpdateFig1(theta0):
+    global nx
+    # generate the source data
     delta = (360.0/nx)%360.0    
-    falseTheta = 0 
-    for x in range(nx):
-        if falseTheta == 0:
-            theta += delta
-        else:
-            theta -= delta
-
-        if theta>360.0:
-            theta = 360.0 - (theta%360.0)
-            falseTheta = 360
-        if theta<0.0:
-            theta = - (theta%-360.0)
-            falseTheta = 0
-
-        lx.append((360.0 - theta) if falseTheta else theta)
-
-    ly = [ 10.0 * math.sin(math.radians(v)) for v in lx]
-
-    # create some ranges for the plot
-    # xdr = Bokeh.Range1d.new({ "start": lx[0], "end": lx[-1] });
-    ydr = Bokeh.Range1d.new({ "start": -0.5, "end": 20.5 });
-
-    # make the plot and add some tools
-    tools = "pan,zoom_in,zoom_out,reset"
-    p = plt.figure({'title': "Sine wave (1 RPM)", 'tools': tools})
-    #add a Line glyph
-    p.line({"x": lx, "y": ly,
-        "line_color": "#666699",
-        "line_width": 2
-    })
-    p.y_range=ydr
-
-    # show the plot
-    mydiv = document['myplot']
-    plt.show(p, mydiv.elt)
-
+    lx = [x * delta for x in range(nx)]
+    ly = [ 10.0 * math.sin(math.radians(theta0+dTheta)) for dTheta in lx]
+    #update the source data
+    source.data = {"x": lx, "y": ly}
+    
 #animation/timed updates
 def TimerUpdate(o):
     global stopRequested
     global id
     global counter
-    global theta0
-    global nx
-
+    #
     if stopRequested:
         id = None
     else:
@@ -83,9 +88,9 @@ def TimerUpdate(o):
         elapsed = now - counter
         if elapsed.total_seconds()>=1.0:
             counter = now
-            theta0 = (theta0 + 6.0)%360.0 #6-degrees per second
-            draw(theta0,nx)
-
+            theta0 = UpdateTheta0(6.0) #6-degrees per second
+            UpdateFig1(theta0)
+        #
         id = raf(TimerUpdate)
 
 def StartHandler(ev):
@@ -93,7 +98,7 @@ def StartHandler(ev):
     global timerInstances
     global id
     global counter
-
+    #
     stopRequested = False
     if (timerInstances == 0) and (id is None):
         timerInstances = 1
@@ -111,6 +116,6 @@ def StopHandler(ev):
         timerInstances -= 1
     stopRequested = True
 
-draw(theta0,nx)
+UpdateFig1(theta0)
 StartHandler(0)
 </script>
