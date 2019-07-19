@@ -4,8 +4,8 @@ title: RSS Feed with Graph
 ---
 <h1>Visualization of RSS Data</h1>
 <div id="myplot" ></div>
-<!-- iframe id="noCORS" title="Environment Canada Weather" src="https://weather.gc.ca/rss/city/nl-39_e.xml"  allowtransparency="true" frameborder="0" style="visibility: hidden; width: 0; height: 0; border: 0; border: none; position: absolute;"></iframe -->
-<iframe id="noCORS" title="Environment Canada Weather"  width="100%" height="300px" src="https://weather.gc.ca/rss/city/nl-39_e.xml"  allowtransparency="true" frameborder="0"></iframe>
+<iframe id="noCORS" title="Environment Canada Weather" src="https://weather.gc.ca/rss/city/nl-39_e.xml"  allowtransparency="true" frameborder="0" style="visibility: hidden; width: 0; height: 0; border: 0; border: none; position: absolute;"></iframe>
+<!-- iframe id="noCORS" title="Environment Canada Weather"  width="100%" height="300px" src="https://weather.gc.ca/rss/city/nl-39_e.xml"  allowtransparency="true" frameborder="0"></iframe -->
 
 <script type="text/python">
 from browser import document, window
@@ -127,17 +127,10 @@ feeds = 0
 #def Complete(request):	
 def Complete():	
     global feeds
-    parser = window.DOMParser.new()
+    #parser = window.DOMParser.new()
     iframe = document["noCORS"]
-    feeds += 1
-    document["myplot"].innerHTML = "%i success"%feeds + ("" if feeds==1 else "es")
-    child = iframe.contentDocument
-    feeds += 1
-    document["myplot"].innerHTML = "%i success"%feeds + ("" if feeds==1 else "es")
-    body = child.body    
-    feeds += 1
-    document["myplot"].innerHTML = "%i success"%feeds + ("" if feeds==1 else "es")
-    tree = parser.parseFromString(body, "application/xml")
+    # body = iframe.outerHTML # TODO
+    # tree = parser.parseFromString(body, "application/atom+xml")
     # data = message_from_string(request.responseText) 
     # json.loads(request.responseText)	
     feeds += 1
