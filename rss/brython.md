@@ -129,9 +129,15 @@ def Complete():
     global feeds
     parser = window.DOMParser.new()
     iframe = document["noCORS"]
+    feeds += 1
+    document["myplot"].innerHTML = "%i success"%feeds + ("" if feeds==1 else "es")
     child = iframe.contentDocument
+    feeds += 1
+    document["myplot"].innerHTML = "%i success"%feeds + ("" if feeds==1 else "es")
     body = child.body    
-    tree = parser.parseFromString(body.innerHTML, "application/xml")
+    feeds += 1
+    document["myplot"].innerHTML = "%i success"%feeds + ("" if feeds==1 else "es")
+    tree = parser.parseFromString(body, "application/xml")
     # data = message_from_string(request.responseText) 
     # json.loads(request.responseText)	
     feeds += 1
