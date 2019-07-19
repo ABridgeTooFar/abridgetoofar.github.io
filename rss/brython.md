@@ -4,6 +4,7 @@ title: RSS Feed with Graph
 ---
 <h1>Visualization of RSS Data</h1>
 <div id="myplot" ></div>
+<iframe id="noCORS" title="Environment Canada Weather" src="https://weather.gc.ca/rss/city/nl-39_e.xml"  allowtransparency="true" frameborder="0" style="visibility: hidden; width: 0; height: 0; border: 0; border: none; position: absolute;"></iframe>
 
 <script type="text/python">
 from browser import document, window
@@ -125,21 +126,24 @@ feeds = 0
 def Complete(request):	
     global feeds
     parser = window.DOMParser.new()
-    tree = parser.parseFromString(request.responseText, "application/xml")
+    iframe = document["noCORS"]
+    tree = parser.parseFromString(iframe.outerHTML, "application/xml")
     # data = message_from_string(request.responseText) 
     # json.loads(request.responseText)	
     feeds += 1
     document["myplot"].innerHTML = "%i success"%feeds + ("" if feeds==1 else "es")
 
 def fake_qs():
-    return "?foo=%s" %time.time()
+    return "?foo=%s"%time.time()
 
 def Schedule(url):	
     req = ajax.ajax()	
     req.open("GET", url, True)	
     req.bind("complete", Complete)	
     document["myplot"].innerHTML = "waiting..."	
-    req.send()	
+    iframe = document["noCORS"]
+    iframe.src = url+fake_qs();
+    req.send()
 
 def UpdateRSS():
     global feeds
