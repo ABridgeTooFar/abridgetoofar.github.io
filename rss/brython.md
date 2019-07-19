@@ -141,7 +141,7 @@ def UpdateRSS():
     global feeds
     newsFeed = feedparser.parse("https://weather.gc.ca/rss/city/nl-39_e.xml")
     feeds += 1
-    document["myplot"].innerHTML = "%i success"%feeds + ("es" if feeds>1)
+    document["myplot"].innerHTML = "%i success"%feeds + ("es" if feeds>1 else "")
 
 #UpdateFig1(theta0)
 #StartHandler(0)
