@@ -10,11 +10,11 @@ from browser import document, window
 import time
 import math
 import json
+import email
 from datetime import datetime
 from browser import timer
 from browser.timer import request_animation_frame as raf
 from browser.timer import cancel_animation_frame as caf
-#from email import feedparser
 
 # paramters of graph
 theta0 = 0.0
@@ -124,7 +124,7 @@ def StopHandler(ev):
 feeds = 0
 def UpdateRSS():
     global feeds
-    # newsFeed = feedparser.parse("https://weather.gc.ca/rss/city/nl-39_e.xml")
+    # newsFeed = email.feedparser.parse("https://weather.gc.ca/rss/city/nl-39_e.xml")
     feeds += 1
     document["myplot"].innerHTML = "%i success"%feeds + ("" if feeds==1 else "es")
     timer.set_timeout(UpdateRSS, 20000)
