@@ -127,6 +127,7 @@ def UpdateRSS():
     # newsFeed = feedparser.parse("https://weather.gc.ca/rss/city/nl-39_e.xml")
     feeds += 1
     document["myplot"].innerHTML = "%i success"%feeds + ("" if feeds==1 else "es")
+    timer.set_timeout(UpdateRSS, 20000)
 
 #UpdateFig1(theta0)
 #StartHandler(0)
