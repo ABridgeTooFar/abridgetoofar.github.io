@@ -12,9 +12,9 @@ import math
 import json
 from datetime import datetime
 from browser import timer
-from browser.email import feedparser
 from browser.timer import request_animation_frame as raf
 from browser.timer import cancel_animation_frame as caf
+from email import feedparser
 
 # paramters of graph
 theta0 = 0.0
