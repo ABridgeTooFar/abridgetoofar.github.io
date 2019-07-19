@@ -11,7 +11,7 @@ import time
 import math
 import json
 from datetime import datetime
-from browser import ajax, timer, bind
+from browser import timer
 from browser.email import feedparser
 from browser.timer import request_animation_frame as raf
 from browser.timer import cancel_animation_frame as caf
@@ -120,21 +120,6 @@ def StopHandler(ev):
     if timerInstances>0:
         timerInstances -= 1
     stopRequested = True
-
-def Complete(request):
-    data = json.loads(request.responseText)
-    position = data["iss_position"]
-    ts = data["timestamp"]
-    timeOfFix = datetime.fromtimestamp(ts)
-    # document["zone10"].text = msg.format(timeOfFix, position)
-
-def Schedule(event):
-    url = "http://api.open-notify.org/iss-now.json"
-    req = ajax.ajax()
-    req.open("GET", url, True)
-    req.bind("complete", Complete)
-    # document["zone10"].text = "waiting..."
-    req.send()
 
 feeds = 0
 def UpdateRSS():
