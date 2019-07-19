@@ -10,9 +10,9 @@ from browser import document, window
 import time
 import math
 import json
-import email
 from datetime import datetime
-from browser import timer
+from browser import timer, ajax, bind
+from email import message_from_string 
 from browser.timer import request_animation_frame as raf
 from browser.timer import cancel_animation_frame as caf
 
@@ -122,11 +122,23 @@ def StopHandler(ev):
     stopRequested = True
 
 feeds = 0
-def UpdateRSS():
+def Complete(request):	
     global feeds
-    # newsFeed = email.feedparser.parse("https://weather.gc.ca/rss/city/nl-39_e.xml")
+    #data = message_from_string(request.responseText) # json.loads(request.responseText)	
     feeds += 1
     document["myplot"].innerHTML = "%i success"%feeds + ("" if feeds==1 else "es")
+
+def Schedule(url):	
+    req = ajax.ajax()	
+    req.open("GET", url, True)	
+    req.bind("complete", Complete)	
+    document["myplot"].innerHTML = "waiting..."	
+    req.send()	
+
+def UpdateRSS():
+    global feeds
+    Schedule("https://weather.gc.ca/rss/city/nl-39_e.xml")
+    # newsFeed = email.feedparser.parse("https://weather.gc.ca/rss/city/nl-39_e.xml")
     timer.set_timeout(UpdateRSS, 20000)
 
 #UpdateFig1(theta0)
