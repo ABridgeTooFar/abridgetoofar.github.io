@@ -129,7 +129,9 @@ def Complete():
     global feeds
     parser = window.DOMParser.new()
     iframe = document["noCORS"]
-    tree = parser.parseFromString(iframe.outerHTML, "application/xml")
+    child = iframe.contentDocument
+    body = child.body    
+    tree = parser.parseFromString(body.innerHTML, "application/xml")
     # data = message_from_string(request.responseText) 
     # json.loads(request.responseText)	
     feeds += 1
