@@ -124,9 +124,14 @@ def StopHandler(ev):
 feeds = 0
 def Complete(request):	
     global feeds
-    #data = message_from_string(request.responseText) # json.loads(request.responseText)	
+    data = message_from_string(request.responseText) # json.loads(request.responseText)	
     feeds += 1
     document["myplot"].innerHTML = "%i success"%feeds + ("" if feeds==1 else "es")
+
+    document["myplot"].innerHTML = "%i success"%feeds + ("" if feeds==1 else "es")
+
+def fake_qs():
+    return "?foo=%s" %time.time()
 
 def Schedule(url):	
     req = ajax.ajax()	
