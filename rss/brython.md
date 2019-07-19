@@ -124,9 +124,9 @@ def StopHandler(ev):
 feeds = 0
 def UpdateRSS():
     global feeds
-    newsFeed = feedparser.parse("https://weather.gc.ca/rss/city/nl-39_e.xml")
+    # newsFeed = feedparser.parse("https://weather.gc.ca/rss/city/nl-39_e.xml")
     feeds += 1
-    document["myplot"].innerHTML = "%i success"%feeds + ("es" if feeds>1 else "")
+    document["myplot"].innerHTML = "%i success"%feeds + ("" if feeds==1 else "es")
 
 #UpdateFig1(theta0)
 #StartHandler(0)
