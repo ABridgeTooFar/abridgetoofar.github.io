@@ -4,7 +4,7 @@ The main purpose of this page is to maintain a library of browser-enabled python
 
 ### Sample code
 
-- [Hello, Brython](hello_world\brython.html)
+- [Hello, Brython](hello_world\brython.html?message=Hello%20There)
 - [Simple Input/Output](inout\brython.html)
 - [Undo/Redo](remember\brython.html)
 - [Hello, Bokeh](hello_bokeh\brython.html)
