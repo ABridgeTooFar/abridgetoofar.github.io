@@ -4,7 +4,7 @@ title: RSS Feed with Graph
 ---
 <h1>Visualization of RSS Data</h1>
 <div id="myplot" ></div>
-<iframe id="noCORS" title="Environment Canada Weather" src="https://weather.gc.ca/rss/city/nl-39_e.xml"  allowtransparency="true" frameborder="0" style="visibility: hidden; width: 0; height: 0; border: 0; border: none; position: absolute;"></iframe>
+<iframe id="noCORS" title="Environment Canada Weather" src="https://weather.gc.ca/rss/city/nl-39_e.xml"  allowtransparency="true" frameborder="0" style="visibility: hidden; width: 0; height: 0; border: 0; border: none; position: absolute;" onload="AfterLoading()"></iframe>
 <!-- iframe id="noCORS" title="Environment Canada Weather"  width="100%" height="300px" src="https://weather.gc.ca/rss/city/nl-39_e.xml"  allowtransparency="true" frameborder="0"></iframe -->
 
 <script type="text/python">
@@ -128,13 +128,24 @@ feeds = 0
 def fake_qs():
     return "?foo=%s"%time.time()
 
+def AfterLoading():
+    feeds += 1
+    message = "%i success"%feeds + ("" if feeds==1 else "es")
+    details = iframe.contentDocument
+    if details:
+        message = "<b>"+message+"</b>"
+    else:
+        try:
+            details = iframe.contentWindow.document
+            message = "<b>"+message+"</b>"
+        except:
+            message = "<s>"+message+"</s>"
+    #fi            
+    document["myplot"].innerHTML = message
+        
 def UpdateRSS():
     global feeds
     iframe = document["noCORS"]
-    details = iframe.contentDocument
-    if details:
-        feeds += 1
-    document["myplot"].innerHTML = "%i success"%feeds + ("" if feeds==1 else "es")
     url = "https://weather.gc.ca/rss/city/nl-39_e.xml"
     iframe.src = url+fake_qs();
     # newsFeed = email.feedparser.parse("https://weather.gc.ca/rss/city/nl-39_e.xml")
