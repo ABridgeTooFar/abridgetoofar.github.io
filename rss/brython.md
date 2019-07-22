@@ -4,6 +4,22 @@ title: RSS Feed with Graph
 ---
 
 <h1>Visualization of RSS Data</h1>
+
+<form method="get" action="/climate_data/bulk_data_e.html?hlyRange=%7C&amp;dlyRange=1933-03-01%7C2019-07-18&amp;mlyRange=1933-01-01%7C2006-02-01&amp;StationID=6614&amp;Prov=NL&amp;urlExtension=_e.html&amp;searchType=stnName&amp;optLimit=yearRange&amp;StartYear=1840&amp;EndYear=2019&amp;selRowPerPage=25&amp;Line=0&amp;searchMethod=begins&amp;Month=7&amp;Day=13&amp;txtStationName=DEER+LAKE&amp;timeframe=2&amp;Year=2019">
+					<fieldset class="mrgn-bttm-md">
+                    <legend class="download">Daily Data (2019)</legend>
+					<div>
+						<label for="bulkCsvLink" class="radio-inline"><input class="deselect-off" checked="checked" type="radio" id="bulkCsvLink" value="csv" name="format"> <abbr title="Comma Separated Values">CSV</abbr></label>
+						<label for="bulkXmlLink" class="radio-inline"><input class="deselect-off" type="radio" id="bulkXmlLink" name="format" value="xml"><abbr title="Extensible Markup Language">&nbsp;XML</abbr></label>
+					</div>
+				    </fieldset>
+				<input class="wb-inv position-top" type="hidden" name="stationID" value="6614">
+				<input class="wb-inv position-top" type="hidden" name="Year" value="2019">
+				<input class="wb-inv position-top" type="hidden" name="Month" value="7">
+				<input class="wb-inv position-top" type="hidden" name="Day" value="1">
+				<input class="wb-inv position-top" type="hidden" name="timeframe" value="2">
+                <input class="btn btn-default text-center mrgn-bttm-md" type="submit" name="submit" value="Download Data">
+</form>
 <div id="myplot" ></div>
 <iframe id="noCORS" title="Environment Canada Weather" src="https://weather.gc.ca/rss/city/nl-39_e.xml"  allowtransparency="true" frameborder="0" style="visibility: hidden; width: 0; height: 0; border: 0; border: none; position: absolute;"></iframe>
 <!-- iframe id="noCORS" title="Environment Canada Weather"  width="100%" height="300px" src="https://weather.gc.ca/rss/city/nl-39_e.xml"  allowtransparency="true" frameborder="0"></iframe -->
