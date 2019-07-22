@@ -13,7 +13,7 @@ import time
 import math
 import json
 from datetime import datetime
-from browser import timer, ajax, bind
+from browser import timer
 from email import message_from_string 
 from browser.timer import request_animation_frame as raf
 from browser.timer import cancel_animation_frame as caf
@@ -124,34 +124,19 @@ def StopHandler(ev):
     stopRequested = True
 
 feeds = 0
-#def Complete(request):	
-def Complete():	
-    global feeds
-    #parser = window.DOMParser.new()
-    iframe = document["noCORS"]
-    # body = iframe.outerHTML # TODO
-    # tree = parser.parseFromString(body, "application/atom+xml")
-    # data = message_from_string(request.responseText) 
-    # json.loads(request.responseText)	
-    feeds += 1
-    document["myplot"].innerHTML = "%i success"%feeds + ("" if feeds==1 else "es")
 
 def fake_qs():
     return "?foo=%s"%time.time()
 
-def Schedule(url):	
-    req = ajax.ajax()	
-    req.open("GET", url, True)	
-    req.bind("complete", Complete)	
-    document["myplot"].innerHTML = "waiting..."	
-    iframe = document["noCORS"]
-    iframe.src = url+fake_qs();
-    #req.send()
-    timer.set_timeout(Complete, 10)
-
 def UpdateRSS():
     global feeds
-    Schedule("https://weather.gc.ca/rss/city/nl-39_e.xml")
+    iframe = document["noCORS"]
+    details = iframe.contentWindow.document if iframe.contentDocument is None else iframe.contentDocument
+    if details:
+        feeds += 1
+    document["myplot"].innerHTML = "%i success"%feeds + ("" if feeds==1 else "es")
+    url = "https://weather.gc.ca/rss/city/nl-39_e.xml"
+    iframe.src = url+fake_qs();
     # newsFeed = email.feedparser.parse("https://weather.gc.ca/rss/city/nl-39_e.xml")
     timer.set_timeout(UpdateRSS, 20000)
 
