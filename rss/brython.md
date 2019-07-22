@@ -44,7 +44,7 @@ function getTitle(text) {
 }
 
 // Make the actual CORS request.
-function makeCorsRequest() {
+function makeCORSRequest() {
   // This is a sample server that supports CORS.
   // var url = 'http://html5rocks-cors.s3-website-us-east-1.amazonaws.com/index.html';
   var url = "https://weather.gc.ca/rss/city/nl-39_e.xml"
