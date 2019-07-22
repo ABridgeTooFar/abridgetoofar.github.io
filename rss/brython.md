@@ -5,7 +5,7 @@ title: RSS Feed with Graph
 
 <h1>Visualization of RSS Data</h1>
 
-<form method="get" action="/climate_data/bulk_data_e.html?hlyRange=%7C&amp;dlyRange=1933-03-01%7C2019-07-18&amp;mlyRange=1933-01-01%7C2006-02-01&amp;StationID=6614&amp;Prov=NL&amp;urlExtension=_e.html&amp;searchType=stnName&amp;optLimit=yearRange&amp;StartYear=1840&amp;EndYear=2019&amp;selRowPerPage=25&amp;Line=0&amp;searchMethod=begins&amp;Month=7&amp;Day=13&amp;txtStationName=DEER+LAKE&amp;timeframe=2&amp;Year=2019">
+<form method="get" action="http://climate.weather.gc.ca/climate_data/bulk_data_e.html?hlyRange=%7C&amp;dlyRange=1933-03-01%7C2019-07-18&amp;mlyRange=1933-01-01%7C2006-02-01&amp;StationID=6614&amp;Prov=NL&amp;urlExtension=_e.html&amp;searchType=stnName&amp;optLimit=yearRange&amp;StartYear=1840&amp;EndYear=2019&amp;selRowPerPage=25&amp;Line=0&amp;searchMethod=begins&amp;Month=7&amp;Day=13&amp;txtStationName=DEER+LAKE&amp;timeframe=2&amp;Year=2019">
 					<fieldset class="mrgn-bttm-md">
                     <legend class="download">Daily Data (2019)</legend>
 					<div>
