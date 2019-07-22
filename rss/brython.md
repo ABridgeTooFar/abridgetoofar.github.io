@@ -20,7 +20,7 @@ title: RSS Feed with Graph
 				<input class="wb-inv position-top" type="hidden" name="timeframe" value="2">
                 <input class="btn btn-default text-center mrgn-bttm-md" type="submit" name="submit" value="Download Data">
 </form>
-<script>
+<!-- script>
 // Create the XHR object.
 function createCORSRequest(method, url) {
   var xhr = new XMLHttpRequest();
@@ -70,7 +70,7 @@ function makeCORSRequest() {
 }
 
 makeCORSRequest();
-</script>
+</script -->
 <div id="myplot" ></div>
 <iframe id="noCORS" title="Environment Canada Weather" src="https://weather.gc.ca/rss/city/nl-39_e.xml"  allowtransparency="true" frameborder="0" style="visibility: hidden; width: 0; height: 0; border: 0; border: none; position: absolute;"></iframe>
 <!-- iframe id="noCORS" title="Environment Canada Weather"  width="100%" height="300px" src="https://weather.gc.ca/rss/city/nl-39_e.xml"  allowtransparency="true" frameborder="0"></iframe -->
