@@ -20,6 +20,13 @@ title: RSS Feed with Graph
 				<input class="wb-inv position-top" type="hidden" name="timeframe" value="2">
                 <input class="btn btn-default text-center mrgn-bttm-md" type="submit" name="submit" value="Download Data">
 </form>
+ <div id="output">mywp</div>
+<script>
+    var link='{"url":"http://mywp.com/cilacap/api/get_posts/", "id":"url_id_01"}';
+    var jcontent= JSON.parse(link);
+    var output=document.getElementById('output');
+    output.innerHTML=jcontent.id + ' ';
+</script>
 <!-- script>
 // Create the XHR object.
 function createCORSRequest(method, url) {
