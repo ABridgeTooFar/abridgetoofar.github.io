@@ -9,6 +9,7 @@ def echo(event):
     alert(document["zone"].value)
 
 document["mybutton"].bind("click", echo)
+document["zone"].value = document.query.getvalue("message","")
 </script>
 
-<input id="zone"><button id="mybutton">click !</button>
+<input id="zone" /><button id="mybutton">click !</button>
