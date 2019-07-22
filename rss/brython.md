@@ -131,7 +131,7 @@ def fake_qs():
 def UpdateRSS():
     global feeds
     iframe = document["noCORS"]
-    details = iframe.contentWindow.document if iframe.contentDocument is None else iframe.contentDocument
+    details = iframe.contentDocument
     if details:
         feeds += 1
     document["myplot"].innerHTML = "%i success"%feeds + ("" if feeds==1 else "es")
