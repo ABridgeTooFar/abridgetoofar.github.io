@@ -52,10 +52,10 @@ function load_js() {
 			var lon = -180.0
 			if (feeds > 0) {
 				seq = form["seq"].value + 1
-				lon = form["lon"].value
-				lat = form["lat"].value + 1
-				if (lat>180.0) {
-					lat -= 360.0
+				lon = form["lon"].value + 1
+				lat = form["lat"].value
+				if (lon>180.0) {
+					lon -= 360.0
 				}
 			}
 			var url = "https://api.openweathermap.org/data/2.5/weather?APPID="+text[1]+"&lat="+lat+"&lon="+lon+"&callback=showText&seq="+seq;
