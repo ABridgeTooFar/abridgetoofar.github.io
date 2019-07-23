@@ -8,7 +8,7 @@ title: RSS Feed with Graph
 <iframe id="html_version"></iframe>
 <div id="text_version"></div>
 <!-- script  type="application/javascript" / -->
-<script>
+<script type="application/javascript">
 function showText(response) {
     var jcontent= JSON.parse(response);
     var output=document.getElementById('text_version');
@@ -31,8 +31,11 @@ function updateWeather() {
 		}
 	}	
 }
+
 </script>
-<button onclick="updateWeather()">Refresh</button>
+
+<p><button onclick="updateWeather();">Refresh</button></p>
+
 <script type="text/python">
 from browser import document, window
 import time
