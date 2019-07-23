@@ -5,83 +5,34 @@ title: RSS Feed with Graph
 
 <h1>Visualization of RSS Data</h1>
 
-<form method="get" action="http://climate.weather.gc.ca/climate_data/bulk_data_e.html?hlyRange=%7C&amp;dlyRange=1933-03-01%7C2019-07-18&amp;mlyRange=1933-01-01%7C2006-02-01&amp;StationID=6614&amp;Prov=NL&amp;urlExtension=_e.html&amp;searchType=stnName&amp;optLimit=yearRange&amp;StartYear=1840&amp;EndYear=2019&amp;selRowPerPage=25&amp;Line=0&amp;searchMethod=begins&amp;Month=7&amp;Day=13&amp;txtStationName=DEER+LAKE&amp;timeframe=2&amp;Year=2019">
-					<fieldset class="mrgn-bttm-md">
-                    <legend class="download">Daily Data (2019)</legend>
-					<div>
-						<label for="bulkCsvLink" class="radio-inline"><input class="deselect-off" checked="checked" type="radio" id="bulkCsvLink" value="csv" name="format"> <abbr title="Comma Separated Values">CSV</abbr></label>
-						<label for="bulkXmlLink" class="radio-inline"><input class="deselect-off" type="radio" id="bulkXmlLink" name="format" value="xml"><abbr title="Extensible Markup Language">&nbsp;XML</abbr></label>
-					</div>
-				    </fieldset>
-				<input class="wb-inv position-top" type="hidden" name="stationID" value="6614">
-				<input class="wb-inv position-top" type="hidden" name="Year" value="2019">
-				<input class="wb-inv position-top" type="hidden" name="Month" value="7">
-				<input class="wb-inv position-top" type="hidden" name="Day" value="1">
-				<input class="wb-inv position-top" type="hidden" name="timeframe" value="2">
-                <input class="btn btn-default text-center mrgn-bttm-md" type="submit" name="submit" value="Download Data">
-</form>
- <div id="output">mywp</div>
+<iframe id="html_version"></iframe>
+<div id="text_version"></div>
+<script  type="application/javascript" />
 <script>
-    var link='{"url":"http://mywp.com/cilacap/api/get_posts/", "id":"url_id_01"}';
-    var jcontent= JSON.parse(link);
-    var output=document.getElementById('output');
-    output.innerHTML=jcontent.id + ' ';
+function showText(response) {
+    var jcontent= JSON.parse(response);
+    var output=document.getElementById('text_version');
+    var list="<dt>Key</dt><dd>Term</dd>";
+    for key in jcontent {
+ 	    list+="<dt>"+key+"</dt><dd>"+jcontent[key]+"</dd>";
+    }	
+    output.innerHTML="<dl>"+list+"</dl>";
+}
+	
+function updateWeather() {
+	var parms = window.location.search.substr(1).split('&');
+	var i;
+	for (i = 0; i < parms.length; i++) {
+	  text = parms[i].split('=')
+	  if (text[0]=="password") {
+		    var output=document.getElementById('html_version');
+	  		var url = "http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID="+text[1]+"&mode=html";
+			output.src = url;			
+	  }
+	}	
+}
 </script>
-<!-- script>
-// Create the XHR object.
-function createCORSRequest(method, url) {
-  var xhr = new XMLHttpRequest();
-  if ("withCredentials" in xhr) {
-    // XHR for Chrome/Firefox/Opera/Safari.
-    xhr.open(method, url, true);
-  } else if (typeof XDomainRequest != "undefined") {
-    // XDomainRequest for IE.
-    xhr = new XDomainRequest();
-    xhr.open(method, url);
-  } else {
-    // CORS not supported.
-    xhr = null;
-  }
-  return xhr;
-}
-
-// Helper method to parse the title tag from the response.
-function getTitle(text) {
-  return text.match('<title>(.*)?</title>')[1];
-}
-
-// Make the actual CORS request.
-function makeCORSRequest() {
-  // This is a sample server that supports CORS.
-  // var url = 'http://html5rocks-cors.s3-website-us-east-1.amazonaws.com/index.html';
-  var url = "https://weather.gc.ca/rss/city/nl-39_e.xml"
-
-  var xhr = createCORSRequest('GET', url);
-  if (!xhr) {
-    alert('CORS not supported');
-    return;
-  }
-
-  // Response handlers.
-  xhr.onload = function() {
-    var text = xhr.responseText;
-    var title = getTitle(text);
-    alert('Response from CORS request to ' + url + ': ' + title);
-  };
-
-  xhr.onerror = function() {
-    alert('Woops, there was an error making the request.');
-  };
-
-  xhr.send();
-}
-
-makeCORSRequest();
-</script -->
-<div id="myplot" ></div>
-<iframe id="noCORS" title="Environment Canada Weather" src="https://weather.gc.ca/rss/city/nl-39_e.xml"  allowtransparency="true" frameborder="0" style="visibility: hidden; width: 0; height: 0; border: 0; border: none; position: absolute;"></iframe>
-<!-- iframe id="noCORS" title="Environment Canada Weather"  width="100%" height="300px" src="https://weather.gc.ca/rss/city/nl-39_e.xml"  allowtransparency="true" frameborder="0"></iframe -->
-
+<button onclick="updateWeather()">Refresh</button>
 <script type="text/python">
 from browser import document, window
 import time
@@ -202,33 +153,4 @@ def StopHandler(ev):
 def fake_qs():
     return "?foo=%s"%time.time()
         
-feeds = 0
-def AfterLoading():
-    global feeds
-    feeds += 1
-    message = "%i success"%feeds + ("" if feeds==1 else "es")
-    iframe = document["noCORS"]
-    details = iframe.contentDocument
-    if details:
-        message = "<b>"+message+"</b>"
-    else:
-        try:
-            details = iframe.contentWindow.document
-            message = "<b>"+message+"</b>"
-        except:
-            message = "<s>"+message+"</s>"
-    #fi            
-    document["myplot"].innerHTML = message
-
-def UpdateRSS():
-    iframe = document["noCORS"]
-    url = "https://weather.gc.ca/rss/city/nl-39_e.xml"
-    iframe.src = url+fake_qs();
-    # newsFeed = email.feedparser.parse("https://weather.gc.ca/rss/city/nl-39_e.xml")
-    timer.set_timeout(UpdateRSS, 20000)
-    AfterLoading()
-    
-#UpdateFig1(theta0)
-#StartHandler(0)
-timer.set_timeout(UpdateRSS, 20000)
 </script>
