@@ -36,6 +36,8 @@ function updateWeather() {
 
 <p><button onclick="updateWeather();">Refresh</button></p>
 
+<div id="myplot"></div>
+
 <script type="text/python">
 from browser import document, window
 import time
