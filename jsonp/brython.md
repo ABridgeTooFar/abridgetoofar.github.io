@@ -6,7 +6,7 @@ title: Call Me Back
 
 <form name="owmfix" id="owmfix">
 Sequence: <input type="number" name="seq" value = "0" /> <br />
-Latitude: <input type="number" name="lat" value = "0.0" /> Longitude: <input type="number" id="lon" value="-180" /> <br />
+Latitude: <input type="number" name="lat" value = "0.0" /> Longitude: <input type="number" id="lon" value="-179" /> <br />
 Temperature: <input type="number" name="temp" value = "0.0" /> Pressure: <input type="number" id="atm" value="0" /> <br />
 Wind speed: <input type="number" name="wspd" value = "0.0" /> Direction: <input type="number" id="wdir" value="0" />
 </form>
@@ -157,9 +157,9 @@ def TimerUpdate(o):
     else:
         now = datetime.now()
         elapsed = now - counter
-        if elapsed.total_seconds()>=20.0:
+        if elapsed.total_seconds()>=2.0:
             counter = now
-            theta0 = UpdateTheta0(120.0) #6-degrees per second
+            theta0 = UpdateTheta0(12.0) #6-degrees per second
             window.load_js()
             #UpdateFig1(theta0)
         #
