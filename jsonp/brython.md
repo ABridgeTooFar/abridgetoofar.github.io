@@ -23,11 +23,10 @@ function showText(jcontent) {
     var atm = form["atm"].value
     var wspd = form["wspd"].value
     var wdir = form["wdir"].value
-
     if (feeds>0) {
     	if (jcontent.coord.lon<lon) {
-			feeds = feeds + 1
-		}
+		feeds = feeds + 1
+	}
     } else {
     	feeds = 1
     }
@@ -51,9 +50,9 @@ function load_js() {
 			var lat = 0.0;
 			var lon = -179.0
 			if (feeds > 0) {
-				seq = form["seq"].value + 1
-				lon = form["lon"].value + 1
-				lat = form["lat"].value
+				seq = parseInt(form["seq"].value) + 1
+				lon = parseFloat(form["lon"].value) + 1
+				lat = parseFloat(form["lat"].value)
 				if (lon>180.0) {
 					lon -= 360.0
 				}
