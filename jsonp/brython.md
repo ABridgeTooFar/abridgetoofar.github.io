@@ -4,8 +4,11 @@ title: Call Me Back
 ---
 <h1>Accepting Data from Trusted External Sites</h1>
 
-<form>
-<input type="number" id="feeds" value="0" />
+<form name="owmfix">
+Sequence: <input type="number" name="seq" value = 0 /> <br />
+Latitude: <input type="number" name="lat" value = 0.0 /> Longitude: <input type="number" id="lon" value="-180" /> <br />
+Temperature: <input type="number" name="temp" value = 0.0 /> Pressure: <input type="number" id="atm" value="0" /> <br />
+Wind speed: <input type="number" name="wspd" value = 0.0 /> Direction: <input type="number" id="wdir" value="0" />
 </form>
 
 <div id="myplot" ></div>
@@ -13,9 +16,28 @@ title: Call Me Back
 <script type="application/javascript">
 var feeds = 0;
 function showText(jcontent) {
-    var field = document.getElementById('feeds');
-    feeds = feeds + 1;
-    field.value=feeds;
+    var form = document.getElementById('owmfix');
+    var lat = form["lat"].value
+    var lon = form["lon"].value
+    var temp = form["temp"].value
+    var atm = form["atm"].value
+    var wspd = form["wspd"].value
+    var wdir = form["wdir"].value
+
+    if (feeds>0) {
+    	if (jcontent.coord.lon<lon) {
+			feeds = feeds + 1
+		}
+    } else {
+    	feeds = 1
+    }
+    form["seq"].value = feeds
+    form["lat"].value = jcontent.coord.lat
+    form["lon"].value  = jcontent.coord.lon
+    form["temp"].value = jcontent.main.temp
+    form["atm"].value = jcontent.main.pressure
+    form["wspd"].value = jcontent.wind.speed
+    form["wdir"].value = jcontent.wind.deg
 }
 	
 function load_js() {
@@ -24,7 +46,19 @@ function load_js() {
 	for (i = 0; i < parms.length; i++) {
 		text = parms[i].split('=')
 		if (text[0]=="password") {
-			var url = "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID="+text[1]+"&callback=showText";
+			var form = document.getElementById('owmfix');
+			var seq = feeds;
+			var lat = 0.0;
+			var lon = -180.0
+			if (feeds > 0) {
+				seq = form["seq"].value + 1
+				lon = form["lon"].value
+				lat = form["lat"].value + 1
+				if (lat>180.0) {
+					lat -= 360.0
+				}
+			}
+			var url = "https://api.openweathermap.org/data/2.5/weather?APPID="+text[1]+"&lat="+lat+"&lon="+lon+"&callback=showText&seq="+seq;
 			var old = document.getElementById('jsonp');
 			var head= document.getElementsByTagName('body')[0];
 			var script= document.createElement('script');
@@ -32,7 +66,7 @@ function load_js() {
 				old.remove();
 			}
 			script.id = 'jsonp';
-			script.src= url+"&feed="+feeds;
+			script.src= url;
 			head.appendChild(script);
 			break;
 		}
