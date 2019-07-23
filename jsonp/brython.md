@@ -49,7 +49,7 @@ function load_js() {
 			var form = document.getElementById('owmfix');
 			var seq = feeds;
 			var lat = 0.0;
-			var lon = -180.0
+			var lon = -179.0
 			if (feeds > 0) {
 				seq = form["seq"].value + 1
 				lon = form["lon"].value + 1
