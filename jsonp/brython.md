@@ -5,10 +5,10 @@ title: Call Me Back
 <h1>Accepting Data from Trusted External Sites</h1>
 
 <form name="owmfix">
-Sequence: <input type="number" name="seq" value = 0 /> <br />
-Latitude: <input type="number" name="lat" value = 0.0 /> Longitude: <input type="number" id="lon" value="-180" /> <br />
-Temperature: <input type="number" name="temp" value = 0.0 /> Pressure: <input type="number" id="atm" value="0" /> <br />
-Wind speed: <input type="number" name="wspd" value = 0.0 /> Direction: <input type="number" id="wdir" value="0" />
+Sequence: <input type="number" name="seq" value = "0" /> <br />
+Latitude: <input type="number" name="lat" value = "0.0" /> Longitude: <input type="number" id="lon" value="-180" /> <br />
+Temperature: <input type="number" name="temp" value = "0.0" /> Pressure: <input type="number" id="atm" value="0" /> <br />
+Wind speed: <input type="number" name="wspd" value = "0.0" /> Direction: <input type="number" id="wdir" value="0" />
 </form>
 
 <div id="myplot" ></div>
