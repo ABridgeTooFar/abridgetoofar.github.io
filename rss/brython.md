@@ -26,15 +26,15 @@ function load_js() {
 		text = parms[i].split('=')
 		if (text[0]=="password") {
 			var url = "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID="+text[1]+"&callback=showText";
-			var old = document.scripts.namedItem('jsonp');
+			var old = document.getElementById('jsonp');
 			var head= document.getElementsByTagName('head')[0];
 			var script= document.createElement('script');
-			script.id = 'jsonp';
-			script.src= url;
-			head.appendChild(script);
 			if (old) {
 				old.remove();
 			}
+			script.id = 'jsonp';
+			script.src= url;
+			head.appendChild(script);
 			break;
 		}
 	}
