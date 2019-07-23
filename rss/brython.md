@@ -26,7 +26,7 @@ function updateWeather() {
 		text = parms[i].split('=')
 		if (text[0]=="password") {
 			var output=document.getElementById('html_version');
-			var url = "http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID="+text[1]+"&mode=html";
+			var url = "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID="+text[1]+"&mode=html";
 			output.src = url;			
 		}
 	}	
