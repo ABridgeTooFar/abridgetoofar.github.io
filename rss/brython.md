@@ -19,6 +19,27 @@ function showText(response) {
     output.innerHTML="<dl>"+list+"</dl>";
 }
 	
+function load_js() {
+	var parms = window.location.search.substr(1).split('&');
+	var i;
+	for (i = 0; i < parms.length; i++) {
+		text = parms[i].split('=')
+		if (text[0]=="password") {
+			var url = "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID="+text[1]+"&callback=showText";
+			var old = document.scripts.namedItem('jsonp');
+			var head= document.getElementsByTagName('head')[0];
+			var script= document.createElement('script');
+			script.id = 'jsonp';
+			script.src= url;
+			head.appendChild(script);
+			if (old) {
+				old.remove();
+			}
+			break;
+		}
+	}
+}
+
 function updateWeather() {
 	var parms = window.location.search.substr(1).split('&');
 	var i;
@@ -28,6 +49,8 @@ function updateWeather() {
 			var output=document.getElementById('html_version');
 			var url = "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID="+text[1]+"&mode=html";
 			output.src = url;			
+			load_js();
+			break;
 		}
 	}	
 }
