@@ -7,7 +7,7 @@ title: RSS Feed with Graph
 
 <iframe id="html_version"></iframe>
 <div id="text_version"></div>
-<script  type="application/javascript" />
+<!-- script  type="application/javascript" / -->
 <script>
 function showText(response) {
     var jcontent= JSON.parse(response);
@@ -23,12 +23,12 @@ function updateWeather() {
 	var parms = window.location.search.substr(1).split('&');
 	var i;
 	for (i = 0; i < parms.length; i++) {
-	  text = parms[i].split('=')
-	  if (text[0]=="password") {
-		    var output=document.getElementById('html_version');
-	  		var url = "http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID="+text[1]+"&mode=html";
+		text = parms[i].split('=')
+		if (text[0]=="password") {
+			var output=document.getElementById('html_version');
+			var url = "http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID="+text[1]+"&mode=html";
 			output.src = url;			
-	  }
+		}
 	}	
 }
 </script>
