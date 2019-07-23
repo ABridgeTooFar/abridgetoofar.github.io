@@ -5,7 +5,7 @@ title: Call Me Back
 <h1>Accepting Data from Trusted External Sites</h1>
 
 <form>
-<input type="number" id="jsonp" value="0" />
+<input type="number" id="feeds" value="0" />
 </form>
 
 <div id="myplot" ></div>
@@ -13,7 +13,7 @@ title: Call Me Back
 <script type="application/javascript">
 var feeds = 0;
 function showText(jcontent) {
-		var field = document.getElementById('jsonp');
+    var field = document.getElementById('feeds');
     feeds = feeds + 1;
     field.value=feeds;
 }
@@ -32,7 +32,7 @@ function load_js() {
 				old.remove();
 			}
 			script.id = 'jsonp';
-			script.src= url;
+			script.src= url+"&feed="+feeds;
 			head.appendChild(script);
 			break;
 		}
@@ -123,9 +123,9 @@ def TimerUpdate(o):
     else:
         now = datetime.now()
         elapsed = now - counter
-        if elapsed.total_seconds()>=1.0:
+        if elapsed.total_seconds()>=20.0:
             counter = now
-            theta0 = UpdateTheta0(6.0) #6-degrees per second
+            theta0 = UpdateTheta0(120.0) #6-degrees per second
             window.load_js()
             #UpdateFig1(theta0)
         #
