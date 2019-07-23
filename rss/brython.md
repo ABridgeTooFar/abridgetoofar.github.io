@@ -9,8 +9,7 @@ title: RSS Feed with Graph
 <div id="text_version"></div>
 <!-- script  type="application/javascript" / -->
 <script type="application/javascript">
-function showText(response) {
-    var jcontent= JSON.parse({"status" : "OK"});//response);
+function showText(jcontent) {
     var output=document.getElementById('text_version');
     var list="<dt>Key</dt><dd>Term</dd>";
     for (key in jcontent) {
