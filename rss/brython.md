@@ -13,7 +13,7 @@ function showText(response) {
     var jcontent= JSON.parse(response);
     var output=document.getElementById('text_version');
     var list="<dt>Key</dt><dd>Term</dd>";
-    for key in jcontent {
+    for (key in jcontent) {
  	    list+="<dt>"+key+"</dt><dd>"+jcontent[key]+"</dd>";
     }	
     output.innerHTML="<dl>"+list+"</dl>";
