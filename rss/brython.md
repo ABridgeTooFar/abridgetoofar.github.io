@@ -27,7 +27,7 @@ function load_js() {
 		if (text[0]=="password") {
 			var url = "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID="+text[1]+"&callback=showText";
 			var old = document.getElementById('jsonp');
-			var head= document.getElementsByTagName('head')[0];
+			var head= document.getElementsByTagName('body')[0];
 			var script= document.createElement('script');
 			if (old) {
 				old.remove();
