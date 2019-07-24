@@ -130,7 +130,7 @@ fig1.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : source,
 })
 fig1.x_range=xdr
 fig1.y_range=ldr
-#fig1.extra_y_ranges={"times10":rdr}
+fig1.extra_y_ranges={"times10":rdr}
 #fig1.add_layout(LinearAxis.new({"y_range_name":"times10"}), 'right')
 
 # show the plot
