@@ -152,23 +152,23 @@ def TimerUpdate(o):
     if stopRequested:
         id = None
     else:
-		if feeds<0:
-			feeds = 0
-	    	theta0 = UpdateTheta0(0.0)
-			UpdateFig1(theta0)
-			window.load_js()
-		else:
-			form = document['owmfix']
-    		seq = int(form['seq'].value)
-			if seq > feeds:
-				feeds = seq
-	    	    theta0 = UpdateTheta0(12.0) #6-degrees per second
-    	    	UpdateFig1(theta0)
-			now = datetime.now()
-			elapsed = now - counter
-			if elapsed.total_seconds()>=2.0:
-				counter = now
-				window.load_js()
+        if feeds<0:
+            feeds = 0
+            theta0 = UpdateTheta0(0.0)
+            UpdateFig1(theta0)
+            window.load_js()
+        else:
+            form = document['owmfix']
+            seq = int(form['seq'].value)
+            if seq > feeds:
+                feeds = seq
+                theta0 = UpdateTheta0(12.0) #6-degrees per second
+                UpdateFig1(theta0)
+            now = datetime.now()
+            elapsed = now - counter
+            if elapsed.total_seconds()>=2.0:
+                counter = now
+                window.load_js()
         #
         id = raf(TimerUpdate)
 
