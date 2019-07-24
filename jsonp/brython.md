@@ -5,10 +5,10 @@ title: Call Me Back
 <h1>Accepting Data from Trusted External Sites</h1>
 
 <form name="owmfix" id="owmfix">
-Sequence: <input type="number" name="seq" value = "0" /> <br />
-Latitude: <input type="number" name="lat" value = "0.0" /> Longitude: <input type="number" id="lon" value="-179" /> <br />
-Temperature: <input type="number" name="temp" value = "0.0" /> Pressure: <input type="number" id="atm" value="0" /> <br />
-Wind speed: <input type="number" name="wspd" value = "0.0" /> Direction: <input type="number" id="wdir" value="0" />
+Sequence: <input type="number" id="owmseq" name="owmseq" value = "0" /> <br />
+Latitude: <input type="number" id="owmlat" name="owmlat" value = "0.0" /> Longitude: <input type="number" id="owmlon" name="owmlon" value="-179" /> <br />
+Temperature: <input type="number" id="owmtemp" name="owmtemp" value = "0.0" /> Pressure: <input type="number" id="owmatm" name="owmatm" value="0" /> <br />
+Wind speed: <input type="number" id="owmwspd" name="owmwspd" value = "0.0" /> Direction: <input type="number" id="owmwdir" name="owmwdir" value="0" />
 </form>
 
 <div id="myplot" ></div>
@@ -17,20 +17,20 @@ Wind speed: <input type="number" name="wspd" value = "0.0" /> Direction: <input 
 var feeds = 0;
 function showText(jcontent) {
     var form = document.getElementById('owmfix');
-    var lat = form["lat"].value
-    var lon = form["lon"].value
-    var temp = form["temp"].value
-    var atm = form["atm"].value
-    var wspd = form["wspd"].value
-    var wdir = form["wdir"].value
+    var lat = form["owmlat"].value
+    var lon = form["owmlon"].value
+    var temp = form["owmtemp"].value
+    var atm = form["owmatm"].value
+    var wspd = form["owmwspd"].value
+    var wdir = form["owmwdir"].value
     feeds = feeds + 1
-    form["seq"].value = feeds/360
-    form["lat"].value = jcontent.coord.lat
-    form["lon"].value  = jcontent.coord.lon
-    form["temp"].value = jcontent.main.temp
-    form["atm"].value = jcontent.main.pressure
-    form["wspd"].value = jcontent.wind.speed
-    form["wdir"].value = jcontent.wind.deg
+    form["owmseq"].value = feeds
+    form["owmlat"].value = jcontent.coord.lat
+    form["owmlon"].value  = jcontent.coord.lon
+    form["owmtemp"].value = jcontent.main.temp
+    form["owmatm"].value = jcontent.main.pressure
+    form["owmwspd"].value = jcontent.wind.speed
+    form["owmwdir"].value = jcontent.wind.deg
 }
 	
 function load_js() {
@@ -43,13 +43,13 @@ function load_js() {
 			var lat = 0.0;
 			var lon = -179.0
 			if (feeds > 0) {
-				lon = parseFloat(form["lon"].value) + 1
-				lat = parseFloat(form["lat"].value)
+				lon = parseFloat(form["owmlon"].value) + 1
+				lat = parseFloat(form["owmlat"].value)
 				if (lon>180.0) {
 					lon -= 360.0
 				}
 			}
-			var url = "https://api.openweathermap.org/data/2.5/weather?APPID="+text[1]+"&lat="+lat+"&lon="+lon+"&callback=showText&seq="+(feeds/360);
+			var url = "https://api.openweathermap.org/data/2.5/weather?APPID="+text[1]+"&lat="+lat+"&lon="+lon+"&callback=showText&seq="+Math.floor(feeds/360);
 			var old = document.getElementById('jsonp');
 			var head= document.getElementsByTagName('body')[0];
 			var script= document.createElement('script');
@@ -159,7 +159,7 @@ def TimerUpdate(o):
             window.load_js()
         else:
             form = document['owmfix']
-            seq = int(form['seq'].value)
+            seq = int(form['owmseq'].value)
             if seq > feeds:
                 feeds = seq
                 theta0 = UpdateTheta0(12.0) #6-degrees per second
