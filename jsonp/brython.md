@@ -105,8 +105,17 @@ id = None
 # 'importing' the library
 Bokeh = window.Bokeh
 plt = Bokeh.Plotting
-source = Bokeh.ColumnDataSource.new({
-    'data': {'x': [x * 360.0/nx for x in range(nx+1)], 'y': [0.0]*(nx+1) }
+sourceT = Bokeh.ColumnDataSource.new({
+    'data': {'x': range(nx+1), 'y': [0.0]*(nx+1) }
+})
+sourceWN = Bokeh.ColumnDataSource.new({
+    'data': {'x': range(nx+1), 'y': [0.0]*(nx+1) }
+})
+sourceWE = Bokeh.ColumnDataSource.new({
+    'data': {'x': range(nx+1), 'y': [0.0]*(nx+1) }
+})
+sourceP = Bokeh.ColumnDataSource.new({
+    'data': {'x': range(nx+1), 'y': [0.0]*(nx+1) }
 })
 # create some ranges for the plot
 xdr = Bokeh.Range1d.new({ "start": -0.01, "end": 360.01 });
@@ -116,16 +125,27 @@ rdr = Bokeh.Range1d.new({ "start": -150.01, "end": 150.01 });
 # make the plot and add some tools
 tools = "pan,zoom_in,zoom_out,reset"
 fig1 = plt.figure({'title': "Data Visualization (1 RPM)", 'tools': tools})
-fig1.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : source,
-    "line_color": "#666699",
-    "line_width": 2
-})
 fig1.x_range=xdr
 fig1.y_range=ldr
 fig1.extra_y_ranges["times10"]=rdr
 yra = Bokeh.LinearAxis.new({"y_range_name":"times10"})
 fig1.add_layout(yra, 'right')
 
+lineT,lineWN,lineWE,lineP = [
+    (
+        fig1.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : source,
+            "line_color": "#666699",
+            "line_width": 2
+        })
+    ) if max([abs(y) for y in source.data.y])<=15.0 else (
+        fig1.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : source,
+            "line_color": "#996666",
+            "line_width": 2,
+            "y_range_name": "times10"
+        })
+    )
+    for source in [sourceT,sourceWN,sourceWE,sourceP]
+]
 # show the plot
 mydiv = document['myplot']
 plt.show(fig1, mydiv.elt)
@@ -138,7 +158,7 @@ def UpdateFig1(theta0):
     ly = [ 10.0 * math.sin(math.radians(theta0+dTheta)) for dTheta in lx]
     #update the source data
     #source.data.x = lx
-    source.data.y = ly
+    sourceP.data.y = ly
     source.change.emit()
     
 #animation/timed updates
