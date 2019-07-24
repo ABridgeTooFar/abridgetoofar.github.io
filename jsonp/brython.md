@@ -118,7 +118,8 @@ source = Bokeh.ColumnDataSource.new({
 })
 # create some ranges for the plot
 xdr = Bokeh.Range1d.new({ "start": -0.01, "end": 360.01 });
-ydr = Bokeh.Range1d.new({ "start": -10.01, "end": 10.01 });
+ldr = Bokeh.Range1d.new({ "start": -15.01, "end": 15.01 });
+rdr = Bokeh.Range1d.new({ "start": -150.01, "end": 150.01 });
 
 # make the plot and add some tools
 tools = "pan,zoom_in,zoom_out,reset"
@@ -128,7 +129,8 @@ fig1.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : source,
     "line_width": 2
 })
 fig1.x_range=xdr
-fig1.y_range=ydr
+fig1.y_range=ldr
+fig1.extra_y_ranges={"times10":rdr}
 
 # show the plot
 mydiv = document['myplot']
