@@ -158,8 +158,8 @@ def TimerUpdate(o):
             UpdateFig1(theta0)
             window.load_js()
         else:
-            form = document['owmfix']
-            seq = int(form['owmseq'].value)
+            field = document['owmseq']
+            seq = int(field.value)
             if seq > feeds:
                 feeds = seq
                 theta0 = UpdateTheta0(12.0) #6-degrees per second
