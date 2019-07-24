@@ -23,14 +23,8 @@ function showText(jcontent) {
     var atm = form["atm"].value
     var wspd = form["wspd"].value
     var wdir = form["wdir"].value
-    if (feeds>0) {
-    	if (jcontent.coord.lon<lon) {
-		feeds = feeds + 1
-	}
-    } else {
-    	feeds = 1
-    }
-    form["seq"].value = feeds
+    feeds = feeds + 1
+    form["seq"].value = feeds/360
     form["lat"].value = jcontent.coord.lat
     form["lon"].value  = jcontent.coord.lon
     form["temp"].value = jcontent.main.temp
@@ -46,18 +40,16 @@ function load_js() {
 		text = parms[i].split('=')
 		if (text[0]=="password") {
 			var form = document.getElementById('owmfix');
-			var seq = feeds;
 			var lat = 0.0;
 			var lon = -179.0
 			if (feeds > 0) {
-				seq = parseInt(form["seq"].value) + 1
 				lon = parseFloat(form["lon"].value) + 1
 				lat = parseFloat(form["lat"].value)
 				if (lon>180.0) {
 					lon -= 360.0
 				}
 			}
-			var url = "https://api.openweathermap.org/data/2.5/weather?APPID="+text[1]+"&lat="+lat+"&lon="+lon+"&callback=showText&seq="+seq;
+			var url = "https://api.openweathermap.org/data/2.5/weather?APPID="+text[1]+"&lat="+lat+"&lon="+lon+"&callback=showText&seq="+(feeds/360);
 			var old = document.getElementById('jsonp');
 			var head= document.getElementsByTagName('body')[0];
 			var script= document.createElement('script');
@@ -150,21 +142,33 @@ def UpdateFig1(theta0):
     source.change.emit()
     
 #animation/timed updates
+feeds = -1
 def TimerUpdate(o):
     global stopRequested
     global id
     global counter
+    global feeds
     #
     if stopRequested:
         id = None
     else:
-        now = datetime.now()
-        elapsed = now - counter
-        if elapsed.total_seconds()>=2.0:
-            counter = now
-            theta0 = UpdateTheta0(12.0) #6-degrees per second
-            window.load_js()
-            #UpdateFig1(theta0)
+		if feeds<0:
+			feeds = 0
+	    	theta0 = UpdateTheta0(0.0)
+			UpdateFig1(theta0)
+			window.load_js()
+		else:
+			form = document['owmfix']
+    		seq = int(form['seq'].value)
+			if seq > feeds:
+				feeds = seq
+	    	    theta0 = UpdateTheta0(12.0) #6-degrees per second
+    	    	UpdateFig1(theta0)
+			now = datetime.now()
+			elapsed = now - counter
+			if elapsed.total_seconds()>=2.0:
+				counter = now
+				window.load_js()
         #
         id = raf(TimerUpdate)
 
