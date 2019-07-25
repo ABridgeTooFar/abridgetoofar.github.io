@@ -160,13 +160,15 @@ plt.show(fig1, mydiv.elt)
 
 def UpdateFig1(theta0):
     global nx
+    global sourceP
     # generate the source data
     delta = (360.0/nx)%360.0    
     lx = [x * delta for x in range(nx+1)]
     ly = [ 10.0 * math.sin(math.radians(theta0+dTheta)) for dTheta in lx]
     #update the source data
-    #source.data.x = lx
-    sourceP.data.y = ly
+    source = sourceP
+    source.data.x = lx
+    source.data.y = ly
     source.change.emit()
     
 #animation/timed updates
