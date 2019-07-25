@@ -119,16 +119,17 @@ rdr = Bokeh.Range1d.new({ "start": -150.01, "end": 150.01 });
 # make the plot and add some tools
 tools = "pan,zoom_in,zoom_out,reset"
 fig1 = plt.figure({'title': "Data Visualization (1 RPM)", 'tools': tools})
-lines = [fig1.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : source,
-    "line_color": "#666699",
-    "line_width": 2,
-}) for source in [sourceP,sourceT,sourceWN,sourceWE]]
-lines[0].y_range_name="times10"
 fig1.x_range=xdr
 fig1.y_range=ldr
 fig1.extra_y_ranges["times10"]=rdr
 yra = Bokeh.LinearAxis.new({"y_range_name":"times10"})
 fig1.add_layout(yra, 'right')
+
+lines = [fig1.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : source,
+    "line_width": 2,
+}) for source in [sourceP,sourceT,sourceWN,sourceWE]]
+#for i,source in enumerate([sourceP,sourceT,sourceWN,sourceWE]):
+#    lines[i].y_range_name=("times10" if max(abs(source.data.y))>15 else None)
 
 # show the plot
 mydiv = document['myplot']
@@ -137,10 +138,14 @@ plt.show(fig1, mydiv.elt)
 def UpdateFig1(theta0):
     global nx
     global sourceP
+    global lines
     source = sourceP
     # generate the source data
     delta = (360.0/nx)%360.0    
     ly = source.data.y[1:]+[0.1*float(document['owmatm'].value)]#[ 10.0 * math.sin(math.radians(theta0+dTheta)) for dTheta in source.data.x]
+    if max(abs(ly))>15:
+        lines[0].y_range_name="times10";
+        lines[0].line_color="pink"
     #update the source data
     #source.data.x = lx
     source.data.y = ly
