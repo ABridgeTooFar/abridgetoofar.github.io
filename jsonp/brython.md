@@ -105,6 +105,8 @@ id = None
 # 'importing' the library
 Bokeh = window.Bokeh
 plt = Bokeh.Plotting
+
+# create some sources for the data
 sourceT = Bokeh.ColumnDataSource.new({
     'data': {'x': range(nx+1), 'y': [0.0]*(nx+1) }
 })
@@ -117,6 +119,7 @@ sourceWE = Bokeh.ColumnDataSource.new({
 sourceP = Bokeh.ColumnDataSource.new({
     'data': {'x': range(nx+1), 'y': [0.0]*(nx+1) }
 })
+
 # create some ranges for the plot
 xdr = Bokeh.Range1d.new({ "start": -0.01, "end": 360.01 });
 ldr = Bokeh.Range1d.new({ "start": -15.01, "end": 15.01 });
@@ -131,7 +134,7 @@ fig1.extra_y_ranges["times10"]=rdr
 yra = Bokeh.LinearAxis.new({"y_range_name":"times10"})
 fig1.add_layout(yra, 'right')
 
-lines = [ #lineT,lineWN,lineWE,lineP = [
+"""lines = [ #lineT,lineWN,lineWE,lineP = [
     (
         fig1.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : source,
             "line_color": "#666699",
@@ -146,6 +149,11 @@ lines = [ #lineT,lineWN,lineWE,lineP = [
     )
     for source in [sourceT,sourceWN,sourceWE,sourceP]
 ]
+"""
+fig1.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : sourceP,
+    "line_color": "#666699",
+    "line_width": 2
+})
 # show the plot
 mydiv = document['myplot']
 plt.show(fig1, mydiv.elt)
