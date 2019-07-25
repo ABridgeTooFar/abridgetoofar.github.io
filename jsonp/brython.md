@@ -127,7 +127,7 @@ fig1.add_layout(yra, 'right')
 lines = [fig1.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : source,
     "line_width": 2,
     "line_color": colour
-}) for source,colour in zip(sources,colors)]
+}) for source,colour in zip(sources,colours)]
 
 #for i,source in enumerate([sourceP,sourceT,sourceWN,sourceWE]):
 #    lines[i].y_range_name=("times10" if max(abs(source.data.y))>15 else None)ur
