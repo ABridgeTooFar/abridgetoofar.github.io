@@ -206,6 +206,19 @@ def Every500ms():
         window.load_js()
     timer.set_timeout(Every500ms, 500)
 
+pyfeeds = 0;
+def showText(jcontent):
+    pyfeeds = pyfeeds + 1
+    #document["owmlat"].value = jcontent.coord.lat
+    #document["owmlon"].value  = jcontent.coord.lon
+    #document["owmtemp"].value = jcontent.main.temp
+    #document["owmatm"].value = jcontent.main.pressure
+    #document["owmwspd"].value = jcontent.wind.speed
+    #document["owmwdir"].value = jcontent.wind.deg
+    document["owmseq"].value = pyfeeds; //update the sequence ID last 
+
+#process callback using Brython
+window.showText=showText
 timer.set_timeout(Every500ms, 500)
 #UpdateFig1(theta0)
 StartHandler(0)
