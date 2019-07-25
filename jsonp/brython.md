@@ -26,7 +26,9 @@ function showText(jcontent) {
     form["owmwdir"].value = jcontent.wind.deg
     form["owmseq"].value = feeds; //update the sequence ID last 
 }
-	
+function test(jcontent)	{
+    showText(jcontent) 
+}
 function load_js() {
 	var parms = window.location.search.substr(1).split('&');
 	var i;
