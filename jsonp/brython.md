@@ -67,6 +67,7 @@ from browser.timer import cancel_animation_frame as caf
 import time
 import math
 from datetime import datetime
+import json
 
 # paramters of graph
 theta0 = 0.0
@@ -210,12 +211,13 @@ pyfeeds = 0;
 def showText(jcontent):
     global pyfeeds
     pyfeeds = pyfeeds + 1
-    document["owmlat"].value = jcontent.coord.lat
-    document["owmlon"].value  = jcontent.coord.lon
-    document["owmtemp"].value = jcontent.main.temp
-    document["owmatm"].value = jcontent.main.pressure
-    document["owmwspd"].value = jcontent.wind.speed
-    document["owmwdir"].value = jcontent.wind.deg
+    pycontent=json.loads(jcontent)
+    document["owmlat"].value = pycontent.coord.lat
+    document["owmlon"].value  = pycontent.coord.lon
+    document["owmtemp"].value = pycontent.main.temp
+    document["owmatm"].value = pycontent.main.pressure
+    document["owmwspd"].value = pycontent.wind.speed
+    document["owmwdir"].value = pycontent.wind.deg
     document["owmseq"].value = pyfeeds; #update the sequence ID last 
 
 #process callback using Brython
