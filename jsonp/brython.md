@@ -24,13 +24,13 @@ function showText(jcontent) {
     var wspd = form["owmwspd"].value
     var wdir = form["owmwdir"].value
     feeds = feeds + 1
-    form["owmseq"].value = feeds
     form["owmlat"].value = jcontent.coord.lat
     form["owmlon"].value  = jcontent.coord.lon
     form["owmtemp"].value = jcontent.main.temp
     form["owmatm"].value = jcontent.main.pressure
     form["owmwspd"].value = jcontent.wind.speed
     form["owmwdir"].value = jcontent.wind.deg
+    form["owmseq"].value = feeds; //update the sequence ID last 
 }
 	
 function load_js() {
@@ -67,6 +67,7 @@ function load_js() {
 
 <script type="text/python">
 from browser import document, window
+from browser import timer
 from browser.timer import request_animation_frame as raf
 from browser.timer import cancel_animation_frame as caf
 import time
@@ -159,7 +160,6 @@ feeds = -1
 def TimerUpdate(o):
     global stopRequested
     global id
-    global counter
     global feeds
     #
     if stopRequested:
@@ -169,7 +169,6 @@ def TimerUpdate(o):
             feeds = 0
             theta0 = UpdateTheta0(0.0)
             UpdateFig1(theta0)
-            window.load_js()
         else:
             field = document['owmseq']
             seq = int(field.value)
@@ -177,11 +176,6 @@ def TimerUpdate(o):
                 feeds = seq
                 theta0 = UpdateTheta0(12.0) #6-degrees per second
                 UpdateFig1(theta0)
-            now = datetime.now()
-            elapsed = now - counter
-            if elapsed.total_seconds()>=2.0:
-                counter = now
-                window.load_js()
         #
         id = raf(TimerUpdate)
 
@@ -189,12 +183,10 @@ def StartHandler(ev):
     global stopRequested
     global timerInstances
     global id
-    global counter
     #
     stopRequested = False
     if (timerInstances == 0) and (id is None):
         timerInstances = 1
-        counter = datetime.now()
         id = raf(TimerUpdate)
 
 def StopHandler(ev):
@@ -208,6 +200,16 @@ def StopHandler(ev):
         timerInstances -= 1
     stopRequested = True
 
+def Every500ms():
+    global counter
+    now = datetime.now()
+    elapsed = now - counter
+    if elapsed.total_seconds()>=2.0:
+        counter = now
+        window.load_js()
+    timer.set_timeout(Every500ms, 500)
+
+timer.set_timeout(Every500ms, 500)
 #UpdateFig1(theta0)
 StartHandler(0)
 </script>
