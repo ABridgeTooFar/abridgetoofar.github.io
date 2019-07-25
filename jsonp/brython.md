@@ -45,8 +45,10 @@ function load_js() {
 	for (i = 0; i < parms.length; i++) {
 		text = parms[i].split('=')
 		if (text[0]=="password") {
-    	    owm = "https://api.openweathermap.org/data/2.5/weather"
-            apikey = text[1]
+            if (!(text[1]==apikey)) {
+        	    owm = "https://api.openweathermap.org/data/2.5/weather"
+                apikey = text[1]
+            }
             break;
         }
     }
