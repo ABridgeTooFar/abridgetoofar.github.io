@@ -148,7 +148,7 @@ def UpdateFig1(theta0):
         ly = source.data.y[1:]+[value]
         if abs(value)>15:
             line.y_range_name="times10";
-            #line.line_color="pink"
+            line.line_dash = [6, 3]
         #update the source data
         source.data.y = ly
         source.change.emit()
