@@ -148,7 +148,7 @@ def UpdateFig1(theta0):
     for source,line,value in zip(sources,lines,values):
         ly = source.data.y[1:]+[value]
         if abs(value)>15:
-            line.update({"line_dash": [6, 3],"y_range_name": "times10"})
+            line.update_from_json({"line_dash": [6, 3],"y_range_name": "times10"})
         #update the source data
         source.data.y = ly
         source.change.emit()
