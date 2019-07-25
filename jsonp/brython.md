@@ -141,13 +141,12 @@ def UpdateFig1(theta0):
     global lines
     source = sourceP
     # generate the source data
-    delta = (360.0/nx)%360.0    
-    ly = source.data.y[1:]+[0.1*float(document['owmatm'].value)]#[ 10.0 * math.sin(math.radians(theta0+dTheta)) for dTheta in source.data.x]
-    if max(abs(ly))>15:
+    value = 0.1*float(document['owmatm'].value)
+    ly = source.data.y[1:]+[value]
+    if abs(value)>15:
         lines[0].y_range_name="times10";
         lines[0].line_color="pink"
     #update the source data
-    #source.data.x = lx
     source.data.y = ly
     source.change.emit()
     
