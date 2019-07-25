@@ -119,8 +119,8 @@ fig1 = plt.figure({'title': "Data Visualization (1 RPM)", 'tools': tools})
 lines = [fig1.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : source,
     "line_color": "#666699",
     "line_width": 2,
-    "y_range_name": "times10"
 })]
+lines[0].y_range_name="times10"
 fig1.x_range=xdr
 fig1.y_range=ldr
 fig1.extra_y_ranges["times10"]=rdr
