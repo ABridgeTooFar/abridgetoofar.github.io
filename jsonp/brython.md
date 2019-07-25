@@ -17,12 +17,6 @@ Wind speed: <input type="number" id="owmwspd" name="owmwspd" value = "0.0" /> Di
 var feeds = 0;
 function showText(jcontent) {
     var form = document.getElementById('owmfix');
-    var lat = form["owmlat"].value
-    var lon = form["owmlon"].value
-    var temp = form["owmtemp"].value
-    var atm = form["owmatm"].value
-    var wspd = form["owmwspd"].value
-    var wdir = form["owmwdir"].value
     feeds = feeds + 1
     form["owmlat"].value = jcontent.coord.lat
     form["owmlon"].value  = jcontent.coord.lon
@@ -147,7 +141,10 @@ def UpdateFig1(theta0):
                 float(document['owmwspd'].value)*math.sin(math.radians(float(document['owmwdir'].value)))                
     ]
     for source,line,value in zip(sources,lines,values):
-        ly = source.data.y[1:]+[value]
+        ly = source.data.y[1:]
+    	if abs(value)>150.0:
+            value = ly[-1]
+        ly.append(value)
         if abs(value)>15:
             line.y_range_name="times10"
             line.glyph.line_dash=[6, 3]
