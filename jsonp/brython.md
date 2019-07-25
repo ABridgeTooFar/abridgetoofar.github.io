@@ -135,7 +135,7 @@ def UpdateFig1(theta0):
     global source
     # generate the source data
     delta = (360.0/nx)%360.0    
-    ly = source.data.y[1:]+[0.001*int(document['owmatm'].value)]#[ 10.0 * math.sin(math.radians(theta0+dTheta)) for dTheta in source.data.x]
+    ly = source.data.y[1:]+[0.001*float(document['owmatm'].value)]#[ 10.0 * math.sin(math.radians(theta0+dTheta)) for dTheta in source.data.x]
     #update the source data
     #source.data.x = lx
     source.data.y = ly
