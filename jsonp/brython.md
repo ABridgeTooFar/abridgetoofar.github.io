@@ -211,7 +211,7 @@ pyfeeds = 0;
 def showText(jcontent):
     global pyfeeds
     pyfeeds = pyfeeds + 1
-    pycontent=json.loads(jcontent)
+    pycontent=json.loads(json.dumps(jcontent))
     document["owmlat"].value = pycontent.coord.lat
     document["owmlon"].value  = pycontent.coord.lon
     document["owmtemp"].value = pycontent.main.temp
