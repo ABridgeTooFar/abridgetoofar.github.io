@@ -76,7 +76,7 @@ from datetime import datetime
 # paramters of graph
 theta0 = 0.0
 falseTheta = 0 
-nx = 10
+nx = 360
 
 def UpdateTheta0(delta):
     global theta0,falseTheta
@@ -105,7 +105,10 @@ id = None
 # 'importing' the library
 Bokeh = window.Bokeh
 plt = Bokeh.Plotting
-source = Bokeh.ColumnDataSource.new({
+sourceT = sourceWN = sourceWE = Bokeh.ColumnDataSource.new({
+    'data': {'x': [x * 360.0/nx for x in range(nx+1)], 'y': [0.0]*(nx+1) }
+})
+sourceP = Bokeh.ColumnDataSource.new({
     'data': {'x': [x * 360.0/nx for x in range(nx+1)], 'y': [0.0]*(nx+1) }
 })
 # create some ranges for the plot
@@ -119,7 +122,7 @@ fig1 = plt.figure({'title': "Data Visualization (1 RPM)", 'tools': tools})
 lines = [fig1.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : source,
     "line_color": "#666699",
     "line_width": 2,
-})]
+}) for source in sourceP,sourceT,sourceWN,sourceWE]]
 lines[0].y_range_name="times10"
 fig1.x_range=xdr
 fig1.y_range=ldr
@@ -133,7 +136,8 @@ plt.show(fig1, mydiv.elt)
 
 def UpdateFig1(theta0):
     global nx
-    global source
+    global sourceP
+    source = sourceP
     # generate the source data
     delta = (360.0/nx)%360.0    
     ly = source.data.y[1:]+[0.1*float(document['owmatm'].value)]#[ 10.0 * math.sin(math.radians(theta0+dTheta)) for dTheta in source.data.x]
