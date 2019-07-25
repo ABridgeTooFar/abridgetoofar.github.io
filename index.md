@@ -10,6 +10,7 @@ The main purpose of this page is to maintain a library of browser-enabled python
 - [Hello, Bokeh](hello_bokeh\brython.html)
 - [Stop-watch](interval\brython.html)
 - [One RPM](onerpm\brython.html)
+- [Weather Around the Belt](jsonp\brython.html?password=b6907d289e10d714a6e88b30761fae22)
 
 ### Browse the source
 
