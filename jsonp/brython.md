@@ -105,12 +105,10 @@ id = None
 # 'importing' the library
 Bokeh = window.Bokeh
 plt = Bokeh.Plotting
-sourceT = sourceWN = sourceWE = Bokeh.ColumnDataSource.new({
+sources = [Bokeh.ColumnDataSource.new({
     'data': {'x': [x * 360.0/nx for x in range(nx+1)], 'y': [0.0]*(nx+1) }
-})
-sourceP = Bokeh.ColumnDataSource.new({
-    'data': {'x': [x * 360.0/nx for x in range(nx+1)], 'y': [0.0]*(nx+1) }
-})
+}) for i in range(4)]
+
 # create some ranges for the plot
 xdr = Bokeh.Range1d.new({ "start": -0.01, "end": 360.01 });
 ldr = Bokeh.Range1d.new({ "start": -15.01, "end": 15.01 });
@@ -127,7 +125,7 @@ fig1.add_layout(yra, 'right')
 
 lines = [fig1.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : source,
     "line_width": 2,
-}) for source in [sourceP,sourceT,sourceWN,sourceWE]]
+}) for source in sources]
 #for i,source in enumerate([sourceP,sourceT,sourceWN,sourceWE]):
 #    lines[i].y_range_name=("times10" if max(abs(source.data.y))>15 else None)
 
@@ -136,19 +134,22 @@ mydiv = document['myplot']
 plt.show(fig1, mydiv.elt)
 
 def UpdateFig1(theta0):
-    global nx
-    global sourceP
+    global sources
     global lines
-    source = sourceP
     # generate the source data
-    value = 0.1*float(document['owmatm'].value)
-    ly = source.data.y[1:]+[value]
-    if abs(value)>15:
-        lines[0].y_range_name="times10";
-        lines[0].line_color="pink"
-    #update the source data
-    source.data.y = ly
-    source.change.emit()
+    values = [ 	0.1*float(document['owmatm'].value),
+                float(document['owmtemp'].value)-273.15,
+                float(document['owmwspd'].value)*math.cos(math.radians(float(document['owmwdir'].value))),
+                float(document['owmwspd'].value)*math.sin(math.radians(float(document['owmwdir'].value)))                
+    ]
+    for source,line,value in zip(sources,lines,values):
+        ly = source.data.y[1:]+[value]
+        if abs(value)>15:
+            line.y_range_name="times10";
+            #line.line_color="pink"
+        #update the source data
+        source.data.y = ly
+        source.change.emit()
     
 #animation/timed updates
 feeds = -1
