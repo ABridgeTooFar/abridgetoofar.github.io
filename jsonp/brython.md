@@ -132,10 +132,10 @@ plt.show(fig1, mydiv.elt)
 
 def UpdateFig1(theta0):
     global nx
+    global source
     # generate the source data
     delta = (360.0/nx)%360.0    
-    lx = [x * delta for x in range(nx+1)]
-    ly = [ 10.0 * math.sin(math.radians(theta0+dTheta)) for dTheta in lx]
+    ly = source.data.y[1:]+[0.001*int(document['owmatm'].value)]#[ 10.0 * math.sin(math.radians(theta0+dTheta)) for dTheta in source.data.x]
     #update the source data
     #source.data.x = lx
     source.data.y = ly
