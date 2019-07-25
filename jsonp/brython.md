@@ -105,9 +105,10 @@ id = None
 # 'importing' the library
 Bokeh = window.Bokeh
 plt = Bokeh.Plotting
+colours = ["black","green","blue","red"]
 sources = [Bokeh.ColumnDataSource.new({
     'data': {'x': [x * 360.0/nx for x in range(nx+1)], 'y': [0.0]*(nx+1) }
-}) for i in range(4)]
+}) for i in colours]
 
 # create some ranges for the plot
 xdr = Bokeh.Range1d.new({ "start": -0.01, "end": 360.01 });
@@ -125,10 +126,11 @@ fig1.add_layout(yra, 'right')
 
 lines = [fig1.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : source,
     "line_width": 2,
-}) for source in sources]
-#for i,source in enumerate([sourceP,sourceT,sourceWN,sourceWE]):
-#    lines[i].y_range_name=("times10" if max(abs(source.data.y))>15 else None)
+    "line_color": colour
+}) for source,colour in zip(sources,colors)]
 
+#for i,source in enumerate([sourceP,sourceT,sourceWN,sourceWE]):
+#    lines[i].y_range_name=("times10" if max(abs(source.data.y))>15 else None)ur
 # show the plot
 mydiv = document['myplot']
 plt.show(fig1, mydiv.elt)
