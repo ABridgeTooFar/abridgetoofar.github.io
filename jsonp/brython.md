@@ -131,7 +131,7 @@ fig1.extra_y_ranges["times10"]=rdr
 yra = Bokeh.LinearAxis.new({"y_range_name":"times10"})
 fig1.add_layout(yra, 'right')
 
-lineT,lineWN,lineWE,lineP = [
+lines = [ #lineT,lineWN,lineWE,lineP = [
     (
         fig1.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : source,
             "line_color": "#666699",
