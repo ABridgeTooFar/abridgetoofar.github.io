@@ -122,7 +122,7 @@ fig1 = plt.figure({'title': "Data Visualization (1 RPM)", 'tools': tools})
 lines = [fig1.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : source,
     "line_color": "#666699",
     "line_width": 2,
-}) for source in sourceP,sourceT,sourceWN,sourceWE]]
+}) for source in [sourceP,sourceT,sourceWN,sourceWE]]
 lines[0].y_range_name="times10"
 fig1.x_range=xdr
 fig1.y_range=ldr
