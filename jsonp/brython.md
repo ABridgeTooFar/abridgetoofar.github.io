@@ -215,7 +215,7 @@ def showText(jcontent):
     #document["owmatm"].value = jcontent.main.pressure
     #document["owmwspd"].value = jcontent.wind.speed
     #document["owmwdir"].value = jcontent.wind.deg
-    document["owmseq"].value = pyfeeds; //update the sequence ID last 
+    document["owmseq"].value = pyfeeds; #update the sequence ID last 
 
 #process callback using Brython
 window.showText=showText
