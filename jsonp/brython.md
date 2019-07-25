@@ -210,12 +210,12 @@ pyfeeds = 0;
 def showText(jcontent):
     global pyfeeds
     pyfeeds = pyfeeds + 1
-    #document["owmlat"].value = jcontent.coord.lat
-    #document["owmlon"].value  = jcontent.coord.lon
-    #document["owmtemp"].value = jcontent.main.temp
+    document["owmlat"].value = jcontent.coord.lat
+    document["owmlon"].value  = jcontent.coord.lon
+    document["owmtemp"].value = jcontent.main.temp
     document["owmatm"].value = jcontent.main.pressure
-    #document["owmwspd"].value = jcontent.wind.speed
-    #document["owmwdir"].value = jcontent.wind.deg
+    document["owmwspd"].value = jcontent.wind.speed
+    document["owmwdir"].value = jcontent.wind.deg
     document["owmseq"].value = pyfeeds; #update the sequence ID last 
 
 #process callback using Brython
