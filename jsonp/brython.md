@@ -15,6 +15,19 @@ Wind speed: <input type="number" id="owmwspd" name="owmwspd" value = "0.0" /> Di
 
 <script type="application/javascript">
 var feeds = 0;
+var owmfixes = []
+
+function recordContent(jcontent) {
+    owmfixes.push[
+        parseFloat(jcontent.coord.lat),
+        parseFloat(jcontent.coord.lon),
+        parseFloat(jcontent.main.temp),
+        parseFloat(jcontent.main.pressure),
+        parseFloat(jcontent.wind.speed),
+    	parseFloat(jcontent.wind.deg)
+   ]);
+}
+
 function showText(jcontent) {
     var form = document.getElementById('owmfix');
     feeds = feeds + 1
@@ -24,6 +37,9 @@ function showText(jcontent) {
     form["owmatm"].value = jcontent.main.pressure
     form["owmwspd"].value = jcontent.wind.speed
     form["owmwdir"].value = jcontent.wind.deg
+    if (owmfixes.length<360) {
+        recordContent(jcontent);
+    }
     form["owmseq"].value = feeds; //update the sequence ID last 
 }
 
@@ -130,6 +146,8 @@ def UpdateFig1(theta0):
     global sources
     global lines
     # generate the source data
+    while len(window.owmfixes)>0:
+        owmfix=window.owmfixes.pop(0)
     values = [ 	0.1*float(document['owmatm'].value),
          float(document['owmtemp'].value)-273.15,
          float(document['owmwspd'].value)*math.cos(math.radians(float(document['owmwdir'].value))),
@@ -137,7 +155,7 @@ def UpdateFig1(theta0):
     ]
     for source,line,value in zip(sources,lines,values):
         ly = source.data.y[1:]
-    	if abs(value)>150.0:
+        if abs(value)>150.0:
             value = ly[-1]
         ly.append(value)
         if abs(value)>15:
