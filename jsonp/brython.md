@@ -130,11 +130,11 @@ plt.show(fig1, mydiv.elt)
 
 feeds = 0;
 def showText(owmfix,
-    enumOwmlat = 0
-    enumOwmlon = 1
-    enumOwmtemp = 2
-    enumOwmatm = 3
-    enumOwmwspd = 4
+    enumOwmlat = 0,
+    enumOwmlon = 1,
+    enumOwmtemp = 2,
+    enumOwmatm = 3,
+    enumOwmwspd = 4,
     enumOwmwdir=5
 ):
     global feeds;
@@ -150,11 +150,11 @@ def showText(owmfix,
         form["owmseq"].value = feeds; 
 
 def UpdateFig1(
-    enumOwmlat = 0
-    enumOwmlon = 1
-    enumOwmtemp = 2
-    enumOwmatm = 3
-    enumOwmwspd = 4
+    enumOwmlat = 0,
+    enumOwmlon = 1,
+    enumOwmtemp = 2,
+    enumOwmatm = 3,
+    enumOwmwspd = 4,
     enumOwmwdir=5
 ):
     global sources
