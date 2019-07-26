@@ -156,10 +156,10 @@ def UpdateFig1(theta0):
     while len(window.owmfixes)>0:
         owmfix=window.owmfixes.pop(0)
         queue.append([
-	        0.1*ownfix[window.owmatm],
-            ownfix[window.owmtemp]-273.15,
-            ownfix[window.owmwspd]*math.cos(math.radians(ownfix[window.owmwdir])),
-            ownfix[window.owmwspd]*math.sin(math.radians(ownfix[window.owmwdir]))
+            0.1*owmfix[window.owmatm],
+            owmfix[window.owmtemp]-273.15,
+            owmfix[window.owmwspd]*math.cos(math.radians(owmfix[window.owmwdir])),
+            owmfix[window.owmwspd]*math.sin(math.radians(owmfix[window.owmwdir]))
         ]);
     for values in queue:	
         for source,line,value in zip(sources,lines,values):
