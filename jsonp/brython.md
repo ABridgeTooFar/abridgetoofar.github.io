@@ -146,24 +146,27 @@ def UpdateFig1(theta0):
     global sources
     global lines
     # generate the source data
+    queue=[]
     while len(window.owmfixes)>0:
         owmfix=window.owmfixes.pop(0)
-    values = [ 	0.1*float(document['owmatm'].value),
-         float(document['owmtemp'].value)-273.15,
-         float(document['owmwspd'].value)*math.cos(math.radians(float(document['owmwdir'].value))),
-         float(document['owmwspd'].value)*math.sin(math.radians(float(document['owmwdir'].value)))                
-    ]
-    for source,line,value in zip(sources,lines,values):
-        ly = source.data.y[1:]
-        if abs(value)>150.0:
-            value = ly[-1]
-        ly.append(value)
-        if abs(value)>15:
-            line.y_range_name="times10"
-            line.glyph.line_dash=[6, 3]
-        #update the source data
-        source.data.y = ly
-        source.change.emit()
+        queue.append([
+	        0.1*ownfix[window.owmatm],
+            ownfix[window.owmtemp]-273.15,
+            ownfix[window.owmwspd]*math.cos(math.radians(ownfix[window.owmwdir])),
+            ownfix[window.owmwspd]*math.sin(math.radians(ownfix[window.owmwdir]))
+        ]);
+    for values in queue:	
+        for source,line,value in zip(sources,lines,values):
+            ly = source.data.y[1:]
+            if abs(value)>150.0:
+                value = ly[-1]
+            ly.append(value)
+            if abs(value)>15:
+                line.y_range_name="times10"
+                line.glyph.line_dash=[6, 3]
+            #update the source data
+            source.data.y = ly
+            source.change.emit()
     
 #animation/timed updates
 feeds = -1
