@@ -16,12 +16,12 @@ Wind speed: <input type="number" id="owmwspd" name="owmwspd" value = "0.0" /> Di
 <script type="application/javascript">
 var feeds = 0;
 var owmfixes = [];
-const owmlat = 0;
-const owmlon = 1;
-const owmtemp = 2;
-const owmatm = 3;
-const owmwspd = 4;
-const owmwdir=5;
+const enumOwmlat = 0;
+const enumOwmlon = 1;
+const enumOwmtemp = 2;
+const enumOwmatm = 3;
+const enumOwmwspd = 4;
+const enumOwmwdir=5;
 
 function recordContent(jcontent) {
     owmfixes.push([
@@ -156,10 +156,10 @@ def UpdateFig1(theta0):
     while len(window.owmfixes)>0:
         owmfix=window.owmfixes.pop(0)
         queue.append([
-            0.1*owmfix[window.owmatm],
-            owmfix[window.owmtemp]-273.15,
-            owmfix[window.owmwspd]*math.cos(math.radians(owmfix[window.owmwdir])),
-            owmfix[window.owmwspd]*math.sin(math.radians(owmfix[window.owmwdir]))
+            0.1*owmfix[window.enumOwmatm],
+            owmfix[window.enumOwmtemp]-273.15,
+            owmfix[window.enumOwmwspd]*math.cos(math.radians(owmfix[window.enumOwmwdir])),
+            owmfix[window.enumOwmwspd]*math.sin(math.radians(owmfix[window.enumOwmwdir]))
         ]);
     for values in queue:	
         for source,line,value in zip(sources,lines,values):
