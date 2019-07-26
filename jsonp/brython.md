@@ -151,15 +151,21 @@ plt.show(fig1, mydiv.elt)
 def UpdateFig1(theta0):
     global sources
     global lines
+    enumOwmlat = 0
+    enumOwmlon = 1
+    enumOwmtemp = 2
+    enumOwmatm = 3
+    enumOwmwspd = 4
+    enumOwmwdir=5
     # generate the source data
     queue=[]
     while len(window.owmfixes)>0:
         owmfix=window.owmfixes.pop(0)
         queue.append([
-            0.1*owmfix[window.enumOwmatm],
-            owmfix[window.enumOwmtemp]-273.15,
-            owmfix[window.enumOwmwspd]*math.cos(math.radians(owmfix[window.enumOwmwdir])),
-            owmfix[window.enumOwmwspd]*math.sin(math.radians(owmfix[window.enumOwmwdir]))
+            0.1*owmfix[enumOwmatm],
+            owmfix[enumOwmtemp]-273.15,
+            owmfix[enumOwmwspd]*math.cos(math.radians(owmfix[enumOwmwdir])),
+            owmfix[enumOwmwspd]*math.sin(math.radians(owmfix[enumOwmwdir]))
         ]);
     for values in queue:	
         for source,line,value in zip(sources,lines,values):
