@@ -14,7 +14,6 @@ Wind speed: <input type="number" id="owmwspd" name="owmwspd" value = "0.0" /> Di
 <div id="myplot" ></div>
 
 <script type="application/javascript">
-var feeds = 0;
 var owmfixes = [];
 var enumOwmlat = 0;
 var enumOwmlon = 1;
@@ -34,6 +33,7 @@ function recordContent(jcontent) {
    ]);
 }
 
+var feeds = 0;
 function showText(jcontent) {
     var form = document.getElementById('owmfix');
     feeds = feeds + 1
@@ -62,7 +62,7 @@ function load_js(apikey) {
             lon -= 360.0
         }
     }
-    var url = owm+"?APPID="+apikey+"&lat="+lat+"&lon="+lon+"&callback=showText&seq="+Math.floor(feeds/360);
+    var url = owm+"?APPID="+apikey+"&lat="+lat+"&lon="+lon+"&callback=recordContent&seq="+Math.floor(feeds/360);
     var old = document.getElementById('jsonp');
     var head= document.getElementsByTagName('body')[0];
     var script= document.createElement('script');
@@ -86,27 +86,7 @@ from datetime import datetime
 import json
 
 # paramters of graph
-theta0 = 0.0
-falseTheta = 0 
 nx = 360
-
-def UpdateTheta0(delta):
-    global theta0,falseTheta
-    #    
-    delta = delta % 360.0 #make sure delta is positive and modulo 360
-    if falseTheta == 0:
-        theta0 += delta
-    else:
-        theta0 -= delta
-    #fi
-    if theta0>360.0:
-        theta0 = 360.0 - (theta0%360.0)
-        falseTheta = 360
-    if theta0<0.0:
-        theta0 = - (theta0%-360.0)
-        falseTheta = 0
-    #fi
-    return ((360.0 - theta0) if falseTheta else theta0)
     
 # animation/timer state variables
 stopRequested = False
@@ -148,17 +128,40 @@ lines = [fig1.line({"x": {"field" : "x"}, "y": {"field": "y"}, "source" : source
 mydiv = document['myplot']
 plt.show(fig1, mydiv.elt)
 
-def UpdateFig1(theta0):
-    global sources
-    global lines
+feeds = 0;
+def showText(owmfix,
     enumOwmlat = 0
     enumOwmlon = 1
     enumOwmtemp = 2
     enumOwmatm = 3
     enumOwmwspd = 4
     enumOwmwdir=5
+):
+    global feeds;
+    if not (owmfix is None):
+        form = document;
+        feeds = feeds + 1
+        form["owmlat"].value = owmfix[enumOwmlat]
+        form["owmlon"].value  = owmfix[enumOwmlon]
+        form["owmtemp"].value = owmfix[enumOwmtemp]-273.15
+        form["owmatm"].value = 0.1*owmfix[enumOwmatm]
+        form["owmwspd"].value = owmfix[enumOwmwspd]
+        form["owmwdir"].value = owmfix[enumOwmdir]
+        form["owmseq"].value = feeds; 
+
+def UpdateFig1(
+    enumOwmlat = 0
+    enumOwmlon = 1
+    enumOwmtemp = 2
+    enumOwmatm = 3
+    enumOwmwspd = 4
+    enumOwmwdir=5
+):
+    global sources
+    global lines
     # generate the source data
     queue=[]
+    owmfix = None
     while len(window.owmfixes)>0:
         owmfix=window.owmfixes.pop(0)
         queue.append([
@@ -179,29 +182,18 @@ def UpdateFig1(theta0):
             #update the source data
             source.data.y = ly
             source.change.emit()
+    showText(owmfix)
+        
     
 #animation/timed updates
-feeds = -1
 def TimerUpdate(o):
     global stopRequested
     global id
-    global feeds
     #
     if stopRequested:
         id = None
     else:
-        if feeds<0:
-            feeds = 0
-            theta0 = UpdateTheta0(0.0)
-            UpdateFig1(theta0)
-        else:
-            field = document['owmseq']
-            seq = int(field.value)
-            if seq > feeds:
-                feeds = seq
-                theta0 = UpdateTheta0(12.0) #6-degrees per second
-                UpdateFig1(theta0)
-        #
+        UpdateFig1()
         id = raf(TimerUpdate)
 
 def StartHandler(ev):
@@ -231,7 +223,7 @@ def Every500ms():
     apikey=document.query.getvalue("password",fakeapi)
     if (apikey!=fakeapi):
         now = datetime.now()
-	elapsed = now - counter
+        elapsed = now - counter
         if elapsed.total_seconds()>=2.0:
             counter = now
             window.load_js(apikey)
@@ -240,6 +232,5 @@ def Every500ms():
         window.alert("You must provide your own APIKEY")
 
 timer.set_timeout(Every500ms, 500)
-#UpdateFig1(theta0)
 StartHandler(0)
 </script>
