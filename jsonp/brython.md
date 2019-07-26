@@ -213,6 +213,8 @@ def StopHandler(ev):
 
 useecgc=False;
 def Every500ms():
+    global useecgc
+    global feeds;
     global counter
     fakeapi="b6907d289e10d714a6e88b30761fae22"
     apikey=document.query.getvalue("password",fakeapi)
@@ -231,6 +233,7 @@ def Every500ms():
             iframe=document["ecgc"]
             iframe.src = "https://geo.weather.gc.ca/geomet?service=WFS&version=2.0.0&request=GetFeature&typename=CURRENT_CONDITIONS&filter=<Filter><PropertyIsEqualTo><PropertyName>name</PropertyName><Literal>Deer Lake</Literal></PropertyIsEqualTo></Filter>&OUTPUTFORMAT=GeoJSON&calback="+"%i"%feeds;
             feeds = feeds + 1
+        timer.set_timeout(Every500ms, 500)
 
 timer.set_timeout(Every500ms, 500)
 StartHandler(0)
