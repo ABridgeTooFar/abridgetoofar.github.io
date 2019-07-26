@@ -18,7 +18,7 @@ var feeds = 0;
 var owmfixes = []
 
 function recordContent(jcontent) {
-    owmfixes.push[
+    owmfixes.push([
         parseFloat(jcontent.coord.lat),
         parseFloat(jcontent.coord.lon),
         parseFloat(jcontent.main.temp),
