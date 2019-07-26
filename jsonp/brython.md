@@ -16,12 +16,12 @@ Wind speed: <input type="number" id="owmwspd" name="owmwspd" value = "0.0" /> Di
 <script type="application/javascript">
 var feeds = 0;
 var owmfixes = [];
-const enumOwmlat = 0;
-const enumOwmlon = 1;
-const enumOwmtemp = 2;
-const enumOwmatm = 3;
-const enumOwmwspd = 4;
-const enumOwmwdir=5;
+var enumOwmlat = 0;
+var enumOwmlon = 1;
+var enumOwmtemp = 2;
+var enumOwmatm = 3;
+var enumOwmwspd = 4;
+var enumOwmwdir=5;
 
 function recordContent(jcontent) {
     owmfixes.push([
