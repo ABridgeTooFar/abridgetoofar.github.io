@@ -27,13 +27,13 @@ function showText(jcontent) {
     form["owmseq"].value = feeds; //update the sequence ID last 
 }
 function test(jcontent)	{
-    showText(jcontent) 
+    showText(jcontent);
 }
 function load_js() {
-	var parms = window.location.search.substr(1).split('&');
-	var i;
+    var parms = window.location.search.substr(1).split('&');
+    var i;
     var apikey="b6907d289e10d714a6e88b30761fae22"
-	var owm = "https://samples.openweathermap.org/data/2.5/weather"
+    var owm = "https://samples.openweathermap.org/data/2.5/weather"
     var form = document.getElementById('owmfix');
     var lat = 0.0;
     var lon = -179.0
@@ -44,12 +44,12 @@ function load_js() {
             lon -= 360.0
         }
     }
-	for (i = 0; i < parms.length; i++) {
-		text = parms[i].split('=')
-		if (text[0]=="password") {
+    for (i = 0; i < parms.length; i++) {
+        text = parms[i].split('=');
+	if (text[0]=="password") {
             if (!(text[1]==apikey)) {
-        	    owm = "https://api.openweathermap.org/data/2.5/weather"
-                apikey = text[1]
+                owm = "https://api.openweathermap.org/data/2.5/weather;
+                apikey = text[1];
             }
             break;
         }
@@ -62,6 +62,7 @@ function load_js() {
         old.remove();
     }
     script.id = 'jsonp';
+    script.type="application/javascript";
     script.src= url;
     head.appendChild(script);
 }
