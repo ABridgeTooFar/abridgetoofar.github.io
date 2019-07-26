@@ -22,7 +22,9 @@ var enumOwmatm = 3;
 var enumOwmwspd = 4;
 var enumOwmwdir=5;
 
+var feeds = 0;
 function recordContent(jcontent) {
+    feeds = feeds + 1
     owmfixes.push([
         parseFloat(jcontent.coord.lat),
         parseFloat(jcontent.coord.lon),
@@ -33,10 +35,8 @@ function recordContent(jcontent) {
    ]);
 }
 
-var feeds = 0;
 function showText(jcontent) {
     var form = document.getElementById('owmfix');
-    feeds = feeds + 1
     form["owmlat"].value = jcontent.coord.lat
     form["owmlon"].value  = jcontent.coord.lon
     form["owmtemp"].value = jcontent.main.temp
@@ -52,17 +52,9 @@ function showText(jcontent) {
 function load_js(apikey) {
     var i;
     var owm = "https://api.openweathermap.org/data/2.5/weather"
-    var form = document.getElementById('owmfix');
     var lat = 0.0;
-    var lon = -179.0
-    if (feeds > 0) {
-        lon = parseFloat(form["owmlon"].value) + 1
-        lat = parseFloat(form["owmlat"].value)
-        if (lon>180.0) {
-            lon -= 360.0
-        }
-    }
-    var url = owm+"?APPID="+apikey+"&lat="+lat+"&lon="+lon+"&callback=recordContent&seq="+Math.floor(feeds/360);
+    var lon = (181+feeds)%360
+    var url = owm+"?APPID="+apikey+"&lat="+lat+"&lon="+(lon>180.0?lon-360.0:lon)+"&callback=recordContent&seq="+Math.floor(feeds/360);
     var old = document.getElementById('jsonp');
     var head= document.getElementsByTagName('body')[0];
     var script= document.createElement('script');
