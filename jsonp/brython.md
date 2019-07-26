@@ -26,14 +26,10 @@ function showText(jcontent) {
     form["owmwdir"].value = jcontent.wind.deg
     form["owmseq"].value = feeds; //update the sequence ID last 
 }
-function test(jcontent)	{
-    showText(jcontent);
-}
-function load_js() {
-    var parms = window.location.search.substr(1).split('&');
+
+function load_js(apikey) {
     var i;
-    var apikey="b6907d289e10d714a6e88b30761fae22"
-    var owm = "https://samples.openweathermap.org/data/2.5/weather"
+    var owm = "https://api.openweathermap.org/data/2.5/weather"
     var form = document.getElementById('owmfix');
     var lat = 0.0;
     var lon = -179.0
@@ -44,16 +40,6 @@ function load_js() {
             lon -= 360.0
         }
     }
-    for (i = 0; i < parms.length; i++) {
-        text = parms[i].split('=');
-	if (text[0]=="password") {
-            if (!(text[1]==apikey)) {
-                owm = "https://api.openweathermap.org/data/2.5/weather;
-                apikey = text[1];
-            }
-            break;
-        }
-    }
     var url = owm+"?APPID="+apikey+"&lat="+lat+"&lon="+lon+"&callback=showText&seq="+Math.floor(feeds/360);
     var old = document.getElementById('jsonp');
     var head= document.getElementsByTagName('body')[0];
@@ -62,7 +48,6 @@ function load_js() {
         old.remove();
     }
     script.id = 'jsonp';
-    script.type="application/javascript";
     script.src= url;
     head.appendChild(script);
 }
@@ -146,9 +131,9 @@ def UpdateFig1(theta0):
     global lines
     # generate the source data
     values = [ 	0.1*float(document['owmatm'].value),
-                float(document['owmtemp'].value)-273.15,
-                float(document['owmwspd'].value)*math.cos(math.radians(float(document['owmwdir'].value))),
-                float(document['owmwspd'].value)*math.sin(math.radians(float(document['owmwdir'].value)))                
+         float(document['owmtemp'].value)-273.15,
+         float(document['owmwspd'].value)*math.cos(math.radians(float(document['owmwdir'].value))),
+         float(document['owmwspd'].value)*math.sin(math.radians(float(document['owmwdir'].value)))                
     ]
     for source,line,value in zip(sources,lines,values):
         ly = source.data.y[1:]
@@ -209,12 +194,17 @@ def StopHandler(ev):
 
 def Every500ms():
     global counter
-    now = datetime.now()
-    elapsed = now - counter
-    if elapsed.total_seconds()>=2.0:
-        counter = now
-        window.load_js()
-    timer.set_timeout(Every500ms, 500)
+    fakeapi="b6907d289e10d714a6e88b30761fae22"
+    apikey=document.query.getvalue("password",fakeapi)
+    if (apikey!=fakeapi):
+        now = datetime.now()
+	elapsed = now - counter
+        if elapsed.total_seconds()>=2.0:
+            counter = now
+            window.load_js(apikey)
+        timer.set_timeout(Every500ms, 500)
+    else:
+        window.alert("You must provide your own APIKEY")
 
 timer.set_timeout(Every500ms, 500)
 #UpdateFig1(theta0)
