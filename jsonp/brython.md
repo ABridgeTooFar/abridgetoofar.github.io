@@ -146,7 +146,7 @@ def showText(owmfix,
         form["owmtemp"].value = owmfix[enumOwmtemp]-273.15
         form["owmatm"].value = 0.1*owmfix[enumOwmatm]
         form["owmwspd"].value = owmfix[enumOwmwspd]
-        form["owmwdir"].value = owmfix[enumOwmdir]
+        form["owmwdir"].value = owmfix[enumOwmwdir]
         form["owmseq"].value = feeds; 
 
 def UpdateFig1(
