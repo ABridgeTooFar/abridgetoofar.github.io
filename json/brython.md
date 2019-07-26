@@ -1,10 +1,18 @@
 ---
 layout: default
-title: Call Me Back
+title: AJAX or Bust
 ---
-<h1>Accepting Data from Trusted External Sites</h1>
+<h1>Data Transfer without an API key</h1>
 
-<iframe id="ecgc" src="https://geo.weather.gc.ca/geomet?service=WFS&version=2.0.0&request=GetFeature&typename=CURRENT_CONDITIONS&filter=<Filter><PropertyIsEqualTo><PropertyName>name</PropertyName><Literal>Deer Lake</Literal></PropertyIsEqualTo></Filter>&OUTPUTFORMAT=GeoJSON"></iframe>
+<div id="header">
+    <H2>Position of the International Space Station</H2>
+</div>
+
+<div id="container">
+    <div id="coords"></div>
+    <div id="mapid"></div>
+    Position is refreshed every 10 seconds
+</div>
 
 <form name="owmfix" id="owmfix">
 Sequence: <input type="number" id="owmseq" name="owmseq" value = "0" /> <br />
@@ -15,59 +23,8 @@ Wind speed: <input type="number" id="owmwspd" name="owmwspd" value = "0.0" /> Di
 
 <div id="myplot" ></div>
 
-<script type="application/javascript">
-var owmfixes = [];
-var enumOwmlat = 0;
-var enumOwmlon = 1;
-var enumOwmtemp = 2;
-var enumOwmatm = 3;
-var enumOwmwspd = 4;
-var enumOwmwdir=5;
+<script id='ecgc' type='application/json' src="https://geo.weather.gc.ca/geomet?service=WFS&version=2.0.0&request=GetFeature&typename=CURRENT_CONDITIONS&filter=<Filter><PropertyIsEqualTo><PropertyName>name</PropertyName><Literal>Deer Lake</Literal></PropertyIsEqualTo></Filter>&OUTPUTFORMAT=GeoJSON"></script>
 
-var feeds = 0;
-function recordContent(jcontent) {
-    feeds = feeds + 1
-    owmfixes.push([
-        parseFloat(jcontent.coord.lat),
-        parseFloat(jcontent.coord.lon),
-        parseFloat(jcontent.main.temp),
-        parseFloat(jcontent.main.pressure),
-        parseFloat(jcontent.wind.speed),
-    	parseFloat(jcontent.wind.deg)
-   ]);
-}
-
-function showText(jcontent) {
-    var form = document.getElementById('owmfix');
-    form["owmlat"].value = jcontent.coord.lat
-    form["owmlon"].value  = jcontent.coord.lon
-    form["owmtemp"].value = jcontent.main.temp
-    form["owmatm"].value = jcontent.main.pressure
-    form["owmwspd"].value = jcontent.wind.speed
-    form["owmwdir"].value = jcontent.wind.deg
-    if (owmfixes.length<360) {
-        recordContent(jcontent);
-    }
-    form["owmseq"].value = feeds; //update the sequence ID last 
-}
-
-function load_js(apikey) {
-    var i;
-    var owm = "https://api.openweathermap.org/data/2.5/weather"
-    var lat = 0.0;
-    var lon = (181+feeds)%360
-    var url = owm+"?APPID="+apikey+"&lat="+lat+"&lon="+(lon>180.0?lon-360.0:lon)+"&callback=recordContent&seq="+Math.floor(feeds/360);
-    var old = document.getElementById('jsonp');
-    var head= document.getElementsByTagName('body')[0];
-    var script= document.createElement('script');
-    if (old) {
-        old.remove();
-    }
-    script.id = 'jsonp';
-    script.src= url;
-    head.appendChild(script);
-}
-</script>
 
 <script type="text/python">
 from browser import document, window
@@ -78,6 +35,7 @@ import time
 import math
 from datetime import datetime
 import json
+from browser import aio
 
 # paramters of graph
 nx = 360
@@ -211,10 +169,7 @@ def StopHandler(ev):
         timerInstances -= 1
     stopRequested = True
 
-useecgc=False;
 def Every500ms():
-    global useecgc
-    global feeds;
     global counter
     fakeapi="b6907d289e10d714a6e88b30761fae22"
     apikey=document.query.getvalue("password",fakeapi)
@@ -226,15 +181,27 @@ def Every500ms():
             window.load_js(apikey)
         timer.set_timeout(Every500ms, 500)
     else:
-        if not useecgc:
-            window.alert("You must provide your own APIKEY")
-            useecgc=True
-        else:
-            iframe=document["ecgc"]
-            iframe.src = "https://geo.weather.gc.ca/geomet?service=WFS&version=2.0.0&request=GetFeature&typename=CURRENT_CONDITIONS&filter=<Filter><PropertyIsEqualTo><PropertyName>name</PropertyName><Literal>Deer Lake</Literal></PropertyIsEqualTo></Filter>&OUTPUTFORMAT=GeoJSON&calback="+"%i"%feeds;
-            feeds = feeds + 1
-        timer.set_timeout(Every500ms, 500)
+        window.alert("You must provide your own APIKEY")
 
-timer.set_timeout(Every500ms, 500)
-StartHandler(0)
-</script>
+async def show_iss_pos():
+    """Get position from window.navigator.geolocation and put marker on the
+    map.
+    """
+    iss_url = "https://api.open-notify.org/iss-now.json"
+
+    req = await aio.get(iss_url)
+    data = json.loads(req.data)
+    position = data["iss_position"]
+    lat, long = [float(position[key]) for key in ["latitude", "longitude"]]
+
+    document["coords"].text = f"Latitude: {lat:.2f} Longitude: {long:.2f}"
+
+    # Put marker on map
+    #leaflet.marker([lat, long], {"icon": icon}).addTo(mymap)
+
+async def main():
+    while True:
+        await show_iss_pos()
+        await aio.sleep(10)
+
+aio.run(main())</script>
