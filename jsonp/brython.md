@@ -4,8 +4,6 @@ title: Call Me Back
 ---
 <h1>Accepting Data from Trusted External Sites</h1>
 
-<iframe id="ecgc" src="https://geo.weather.gc.ca/geomet?service=WFS&version=2.0.0&request=GetFeature&typename=CURRENT_CONDITIONS&filter=<Filter><PropertyIsEqualTo><PropertyName>name</PropertyName><Literal>Deer Lake</Literal></PropertyIsEqualTo></Filter>&OUTPUTFORMAT=GeoJSON"></iframe>
-
 <form name="owmfix" id="owmfix">
 Sequence: <input type="number" id="owmseq" name="owmseq" value = "0" /> <br />
 Latitude: <input type="number" id="owmlat" name="owmlat" value = "0.0" /> Longitude: <input type="number" id="owmlon" name="owmlon" value="-179" /> <br />
@@ -211,10 +209,7 @@ def StopHandler(ev):
         timerInstances -= 1
     stopRequested = True
 
-useecgc=False;
 def Every500ms():
-    global useecgc
-    global feeds;
     global counter
     fakeapi="b6907d289e10d714a6e88b30761fae22"
     apikey=document.query.getvalue("password",fakeapi)
@@ -226,14 +221,7 @@ def Every500ms():
             window.load_js(apikey)
         timer.set_timeout(Every500ms, 500)
     else:
-        if not useecgc:
-            window.alert("You must provide your own APIKEY")
-            useecgc=True
-        else:
-            iframe=document["ecgc"]
-            iframe.src = "https://geo.weather.gc.ca/geomet?service=WFS&version=2.0.0&request=GetFeature&typename=CURRENT_CONDITIONS&filter=<Filter><PropertyIsEqualTo><PropertyName>name</PropertyName><Literal>Deer Lake</Literal></PropertyIsEqualTo></Filter>&OUTPUTFORMAT=GeoJSON&calback="+"%i"%feeds;
-            feeds = feeds + 1
-        timer.set_timeout(Every500ms, 500)
+        window.alert("You must provide your own APIKEY")
 
 timer.set_timeout(Every500ms, 500)
 StartHandler(0)
