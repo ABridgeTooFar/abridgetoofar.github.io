@@ -4,26 +4,22 @@ title: AJAX or Bust
 ---
 <h1>Data Transfer without an API key</h1>
 
-<div id="header">
-    <H2>Position of the International Space Station</H2>
-</div>
+<div id="mapid"></div>
 
-<div id="container">
-    <div id="coords"></div>
-    <div id="mapid"></div>
-    Position is refreshed every 10 seconds
-</div>
-
-<form name="owmfix" id="owmfix">
-Sequence: <input type="number" id="owmseq" name="owmseq" value = "0" /> <br />
-Latitude: <input type="number" id="owmlat" name="owmlat" value = "0.0" /> Longitude: <input type="number" id="owmlon" name="owmlon" value="-179" /> <br />
-Temperature: <input type="number" id="owmtemp" name="owmtemp" value = "0.0" /> Pressure: <input type="number" id="owmatm" name="owmatm" value="0" /> <br />
-Wind speed: <input type="number" id="owmwspd" name="owmwspd" value = "0.0" /> Direction: <input type="number" id="owmwdir" name="owmwdir" value="0" />
+<form name="geofix" id="geofix">
+Sequence: <input type="number" id="geoseq" name="geoseq" value = "0" /> <br />
+Latitude: <input type="number" id="geolat" name="geolat" value = "0.0" /> Longitude: <input type="number" id="geolon" name="geolon" value="-179" /> <br />
+Temperature: <input type="number" id="geotemp" name="geotemp" value = "0.0" /> Pressure: <input type="number" id="geoatm" name="geoatm" value="0" /> <br />
+Wind speed: <input type="number" id="geowspd" name="geowspd" value = "0.0" /> Direction: <input type="number" id="geowdir" name="geowdir" value="0" />
 </form>
 
 <div id="myplot" ></div>
 
-<script id='ecgc' type='application/json' src="https://geo.weather.gc.ca/geomet?service=WFS&version=2.0.0&request=GetFeature&typename=CURRENT_CONDITIONS&filter=<Filter><PropertyIsEqualTo><PropertyName>name</PropertyName><Literal>Deer Lake</Literal></PropertyIsEqualTo></Filter>&OUTPUTFORMAT=GeoJSON"></script>
+<!--  src="https://geo.weather.gc.ca/geomet?service=WFS&version=2.0.0&request=GetFeature&typename=CURRENT_CONDITIONS&filter=<Filter><PropertyIsEqualTo><PropertyName>name</PropertyName><Literal>Deer Lake</Literal></PropertyIsEqualTo></Filter>&OUTPUTFORMAT=GeoJSON">
+-->
+<script type='application/json'>
+var owmfixes=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+</script>
 
 
 <script type="text/python">
@@ -93,13 +89,13 @@ def showText(owmfix,
     if not (owmfix is None):
         form = document;
         feeds = feeds + 1
-        form["owmlat"].value = owmfix[enumOwmlat]
-        form["owmlon"].value  = owmfix[enumOwmlon]
-        form["owmtemp"].value = "%0.3f"%(owmfix[enumOwmtemp]-273.15)
-        form["owmatm"].value = "%0.3f"%(0.1*owmfix[enumOwmatm])
-        form["owmwspd"].value = owmfix[enumOwmwspd]
-        form["owmwdir"].value = owmfix[enumOwmwdir]
-        form["owmseq"].value = feeds; 
+        form["geolat"].value = owmfix[enumOwmlat]
+        form["geolon"].value  = owmfix[enumOwmlon]
+        form["geotemp"].value = "%0.3f"%(owmfix[enumOwmtemp]-273.15)
+        form["geoatm"].value = "%0.3f"%(0.1*owmfix[enumOwmatm])
+        form["geowspd"].value = owmfix[enumOwmwspd]
+        form["geowdir"].value = owmfix[enumOwmwdir]
+        form["geoseq"].value = feeds; 
 
 def UpdateFig1(
     enumOwmlat = 0,
@@ -183,25 +179,35 @@ def Every500ms():
     else:
         window.alert("You must provide your own APIKEY")
 
-async def show_iss_pos():
+async def Every10s():
     """Get position from window.navigator.geolocation and put marker on the
     map.
     """
-    iss_url = "https://geo.weather.gc.ca/geomet?service=WFS&version=2.0.0&request=GetFeature&typename=CURRENT_CONDITIONS&filter=<Filter><PropertyIsEqualTo><PropertyName>name</PropertyName><Literal>Deer Lake</Literal></PropertyIsEqualTo></Filter>&OUTPUTFORMAT=GeoJSON"
-    req = await aio.get(iss_url)
+    url = "https://geo.weather.gc.ca/geomet?service=WFS&version=2.0.0&request=GetFeature&typename=CURRENT_CONDITIONS&filter=<Filter><PropertyIsEqualTo><PropertyName>name</PropertyName><Literal>Deer Lake</Literal></PropertyIsEqualTo></Filter>&OUTPUTFORMAT=GeoJSON"
+    req = await aio.get(url)
     data = json.loads(req.data)
     for feature in data["features"]: 
-        #properties = feature["properties"]
+        properties = feature["properties"]
         geometry = feature["geometry"]
         lat, long = [float(v) for v in geometry["coordinates"]]
     document["coords"].text = f"Latitude: {lat:.2f} Longitude: {long:.2f}"
+    #enumOwmlat = 0,
+    #enumOwmlon = 1,
+    #enumOwmtemp = 2,
+    #enumOwmatm = 3,
+    #enumOwmwspd = 4,
+    #enumOwmwdir=5
+    window.owmfixes.push([lat,long,float(properties["temp"]),float(properties["press_en"]),
+        float(properties["speed"]),float(properties["bearing"])])
     #
     # Put marker on map
     #leaflet.marker([lat, long], {"icon": icon}).addTo(mymap)
 
 async def main():
+    StartHandler(0)
     while True:
-        await show_iss_pos()
+        await Every10s()
         await aio.sleep(10)
+    StopHandler(0)
 
 aio.run(main())</script>
