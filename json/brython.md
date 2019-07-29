@@ -66,8 +66,8 @@ async def queueData():
     req = await aio.get(url)
     data = json.loads(req.data)
     language="en"
-    picklat=47.54
-    picklon=-54.47
+    picklat = 47.54
+    picklon = -54.47
     pickkey=""
     for feature in data["features"]: 
         properties = feature["properties"]
@@ -84,10 +84,10 @@ async def queueData():
         #     #enumOwmatm = 3,
         #     #enumOwmwspd = 4,
         #     #enumOwmwdir=5
-        geofixes[station]=[
-                 lat,lon,float(properties["temp"]),float(properties["pres_"+language]),
-                 float(properties["speed"]),float(properties["bearing"]),timeOfFix 
-        ]
+        #geofixes[station]=[
+        #         lat, lon, float(properties["temp"]) ,float(properties["pres_"+language]),
+        #         float(properties["speed"]), float(properties["bearing"]), timeOfFix 
+        #]
         if (picklat-4.0<lat<picklat+4.0) and (picklon-4.0<lon<picklon+4.0):
             pickkey = station
             
