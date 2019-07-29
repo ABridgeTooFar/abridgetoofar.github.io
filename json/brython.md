@@ -93,8 +93,8 @@ def showText(owmfix,
         feeds = feeds + 1
         form["geolat"].value = owmfix[enumOwmlat]
         form["geolon"].value  = owmfix[enumOwmlon]
-        form["geotemp"].value = "%0.3f"%(owmfix[enumOwmtemp]-273.15)
-        form["geoatm"].value = "%0.3f"%(0.1*owmfix[enumOwmatm])
+        form["geotemp"].value = "%0.3f"%(owmfix[enumOwmtemp])
+        form["geoatm"].value = "%0.3f"%(owmfix[enumOwmatm])
         form["geowspd"].value = owmfix[enumOwmwspd]
         form["geowdir"].value = owmfix[enumOwmwdir]
         form["geoseq"].value = feeds; 
@@ -115,8 +115,8 @@ def UpdateFig1(
     while len(geofixes)>0:
         owmfix=geofixes.pop(0)
         queue.append([
-            0.1*owmfix[enumOwmatm],
-            owmfix[enumOwmtemp]-273.15,
+            owmfix[enumOwmatm],
+            owmfix[enumOwmtemp],
             owmfix[enumOwmwspd]*math.cos(math.radians(owmfix[enumOwmwdir])),
             owmfix[enumOwmwspd]*math.sin(math.radians(owmfix[enumOwmwdir]))
         ]);
@@ -200,8 +200,8 @@ async def Every10s():
     #enumOwmatm = 3,
     #enumOwmwspd = 4,
     #enumOwmwdir=5
-    geofixes.push( [lat,long,float(properties["temp"]),float(properties["pres_en"]),
-        float(properties["speed"]),float(properties["bearing"])] )
+    geofixes.append( [lat,long,float(properties["temp"]),float(properties["pres_en"]),
+        float(properties["speed"]),float(properties["bearing"]) ] )
     #
     # Put marker on map
     #leaflet.marker([lat, long], {"icon": icon}).addTo(mymap)
