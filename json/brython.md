@@ -83,8 +83,10 @@ async def queueData():
             #enumOwmatm = 3,
             #enumOwmwspd = 4,
             #enumOwmwdir=5
-            geofixes[station]=[lat,long,float(properties["temp"]),float(properties["pres_en"]),
-                float(properties["speed"]),float(properties["bearing"]),timeOfFix ] )
+            geofixes[station]=[
+                lat,long,float(properties["temp"]),float(properties["pres_en"]),
+                float(properties["speed"]),float(properties["bearing"]),timeOfFix 
+            ]
             if picklat-4.0<lat<picklat+4.0 and picklon-4.0<long<picklon+4.0:
                 pickkey = station
             #
