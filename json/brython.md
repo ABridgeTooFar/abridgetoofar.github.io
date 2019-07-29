@@ -63,7 +63,7 @@ async def queueData():
     req = await aio.get(url)
     data = json.loads(req.data)
     document["debugme"].innerHTML="Received Data"
-    if data and ("features' in data):
+    if data and ("features" in data):
         pickkey = ""
         picklat = 47.54
         picklon = -54.47
