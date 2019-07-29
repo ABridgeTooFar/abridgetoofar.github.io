@@ -5,7 +5,7 @@ title: AJAX or Bust
 <h1>Data Transfer without an API key</h1>
 
 <div id="mapid"></div>
-<div id="debug"></div>
+<div id="debugme"></div>
 
 <form name="geofix" id="geofix">
 Sequence: <input type="number" id="geoseq" name="geoseq" value = "0" /> As of: <input id="geoasof" name="geoasof" value = "" />  <br />
@@ -56,16 +56,14 @@ def showText(owmfix,
         form["geowspd"].value = owmfix[enumOwmwspd]
         form["geowdir"].value = owmfix[enumOwmwdir]
         form["geoseq"].value = feeds; 
-
         
 async def queueData():
     global geofixes
-    """Get position from window.navigator.geolocation and put marker on the map.
-    """
     url = "https://geo.weather.gc.ca/geomet?service=WFS&version=2.0.0&request=GetFeature&typename=CURRENT_CONDITIONS&OUTPUTFORMAT=GeoJSON"
     req = await aio.get(url)
     data = json.loads(req.data)
-    document["debug"].innerHTML="Received Data"
+    document["debugme"].innerHTML="Received Data"
+    """
     if data and ("features' in data):
         pickkey = ""
         picklat = 47.54
@@ -97,12 +95,14 @@ async def queueData():
                             # Put marker on map
                             #leaflet.marker([lat, lon], {"icon": icon}).addTo(mymap)
                         except:
-                            document["debug"].innerHTML=station
+                            document["debugme"].innerHTML=station
         if pickkey in geofixes:        
             pass #showText(geofixes[pickkey])
-
+    """
+    
 async def main():
-    await queueData()
-    await aio.sleep(10)
+    while True:
+        await queueData()
+        await aio.sleep(10)
 
 aio.run(main())</script>
