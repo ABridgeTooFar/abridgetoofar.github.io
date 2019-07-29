@@ -43,7 +43,8 @@ def showText(owmfix,
     enumOwmtemp = 2,
     enumOwmatm = 3,
     enumOwmwspd = 4,
-    enumOwmwdir=5
+    enumOwmwdir=5,
+    enumOwmasof = 6
 ):
     global feeds;
     if not (owmfix is None):
@@ -55,6 +56,7 @@ def showText(owmfix,
         form["geoatm"].value = "%0.3f"%(owmfix[enumOwmatm])
         form["geowspd"].value = owmfix[enumOwmwspd]
         form["geowdir"].value = owmfix[enumOwmwdir]
+        form["geoasof"].value = owmfix[enumOwmasof]; 
         form["geoseq"].value = feeds; 
         
 pickkey = ""
@@ -82,7 +84,7 @@ async def queueData():
                            geofixes[station] = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0 , timeOfFix ]
         if pickkey in geofixes:
             document["debugme"].innerHTML=pickkey
-            #showText(geofixes[pickkey])
+            showText(geofixes[pickkey])
         else:
             document["debugme"].innerHTML="No station nearby"
     
