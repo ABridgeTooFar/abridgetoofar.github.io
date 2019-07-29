@@ -7,7 +7,7 @@ title: AJAX or Bust
 <div id="mapid"></div>
 
 <form name="geofix" id="geofix">
-Sequence: <input type="number" id="geoseq" name="geoseq" value = "0" /> <br />
+Sequence: <input type="number" id="geoseq" name="geoseq" value = "0" /> As of: <input id="geoasof" name="geoasof" value = "" />  <br />
 Latitude: <input type="number" id="geolat" name="geolat" value = "0.0" /> Longitude: <input type="number" id="geolon" name="geolon" value="-179" /> <br />
 Temperature: <input type="number" id="geotemp" name="geotemp" value = "0.0" /> Pressure: <input type="number" id="geoatm" name="geoatm" value="0" /> <br />
 Wind speed: <input type="number" id="geowspd" name="geowspd" value = "0.0" /> Direction: <input type="number" id="geowdir" name="geowdir" value="0" />
@@ -18,7 +18,7 @@ Wind speed: <input type="number" id="geowspd" name="geowspd" value = "0.0" /> Di
 <!--  src="https://geo.weather.gc.ca/geomet?service=WFS&version=2.0.0&request=GetFeature&typename=CURRENT_CONDITIONS&filter=<Filter><PropertyIsEqualTo><PropertyName>name</PropertyName><Literal>Deer Lake</Literal></PropertyIsEqualTo></Filter>&OUTPUTFORMAT=GeoJSON">
 -->
 <script type='application/json'>
-var jsonpfixes=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+var jsonpfixes=[[0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]]
 </script>
 
 
@@ -33,7 +33,7 @@ from datetime import datetime
 import json
 from browser import aio
 
-geofixes=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+geofixes=[[0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]]
 
 # paramters of graph
 nx = 360
@@ -193,7 +193,7 @@ async def Every10s():
         geometry = feature["geometry"]
         lat, long = [float(v) for v in geometry["coordinates"]]
         timeOfFix = properties["timestamp"]
-    document["coords"].text = f"Latitude: {lat:.2f} Longitude: {long:.2f} " + timeOfFix
+    document["geoasof"].value = timeOfFix
     #enumOwmlat = 0,
     #enumOwmlon = 1,
     #enumOwmtemp = 2,
@@ -207,7 +207,7 @@ async def Every10s():
     #leaflet.marker([lat, long], {"icon": icon}).addTo(mymap)
 
 async def main():
-    #StartHandler(0)
+    StartHandler(0)
     while True:
         await Every10s()
         await aio.sleep(10)
