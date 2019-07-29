@@ -192,21 +192,22 @@ async def Every10s():
         properties = feature["properties"]
         geometry = feature["geometry"]
         lat, long = [float(v) for v in geometry["coordinates"]]
-    document["coords"].text = f"Latitude: {lat:.2f} Longitude: {long:.2f}"
+        timeOfFix = properties["timestamp"]
+    document["coords"].text = f"Latitude: {lat:.2f} Longitude: {long:.2f} " + timeOfFix
     #enumOwmlat = 0,
     #enumOwmlon = 1,
     #enumOwmtemp = 2,
     #enumOwmatm = 3,
     #enumOwmwspd = 4,
     #enumOwmwdir=5
-    geofixes.push( [lat,long,float(properties["temp"]),float(properties["press_en"]),
-        float(properties["speed"]),float(properties["bearing"])])
+    geofixes.push( [lat,long,float(properties["temp"]),float(properties["pres_en"]),
+        float(properties["speed"]),float(properties["bearing"])] )
     #
     # Put marker on map
     #leaflet.marker([lat, long], {"icon": icon}).addTo(mymap)
 
 async def main():
-    StartHandler(0)
+    #StartHandler(0)
     while True:
         await Every10s()
         await aio.sleep(10)
