@@ -57,17 +57,17 @@ def showText(owmfix,
         form["geowdir"].value = owmfix[enumOwmwdir]
         form["geoseq"].value = feeds; 
         
+pickkey = ""
 async def queueData():
     global geofixes
+    global pickkey
     url = "https://geo.weather.gc.ca/geomet?service=WFS&version=2.0.0&request=GetFeature&typename=CURRENT_CONDITIONS&OUTPUTFORMAT=GeoJSON"
     req = await aio.get(url)
     data = json.loads(req.data)
     document["debugme"].innerHTML="Received Data"
     if data and ("features" in data):
-        pickkey = ""
         picklat = 47.54
         picklon = -54.47
-        """
         for feature in data["features"]: 
             if all([key in feature for key in ["properties","geometry"]]): 
                 language="en"
@@ -77,6 +77,10 @@ async def queueData():
                     if "coordinates" in geometry:
                         station = properties["station_en"];
                         timeOfFix = properties["timestamp"]
+                        if not pickkey:
+                            geofixes[station]=[0.0]*7
+                            pickey = station
+                        """
                         try:
                             lon, lat = [float(v) for v in geometry["coordinates"] ]
                             #     #enumOwmlat = 0,
@@ -96,7 +100,7 @@ async def queueData():
                             #leaflet.marker([lat, lon], {"icon": icon}).addTo(mymap)
                         except:
                             document["debugme"].innerHTML=station
-        """
+                        """
         if pickkey in geofixes:        
             showText(geofixes[pickkey])
         else:
