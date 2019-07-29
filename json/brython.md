@@ -77,11 +77,34 @@ async def queueData():
                 geometry=feature["geometry"]
                 if all([(key in properties) for key in ["station_en","timestamp","temp","pres_en","speed","bearing"] ]):
                     if "coordinates" in geometry:
+                        coordinates = geometry["coordinates"]
+                        lon = float(coordinates[0])
+                        lat = float(coordinates[1])
                         station = properties["station_en"]
                         timeOfFix = properties["timestamp"]
                         if pickkey == "":
                            pickkey = station
                            geofixes[station] = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0 , timeOfFix ]
+                        try:
+                            #     #enumOwmlat = 0,
+                            #     #enumOwmlon = 1,
+                            #     #enumOwmtemp = 2,
+                            #     #enumOwmatm = 3,
+                            #     #enumOwmwspd = 4,
+                            #     #enumOwmwdir=5
+                            if (picklat-4.0 < lat) and (lat < picklat+4.0) and (picklon-4.0 <lon) and (lon <picklon+4.0):
+                                geofixes[station] = [
+                                    lat,
+                                    lon, 
+                                    float(properties["temp"]) ,float(properties["pres_"+language]),
+                                    float(properties["speed"]), float(properties["bearing"]), 
+                                    timeOfFix 
+                                ]
+                                pickkey = station                            
+                            # Put marker on map
+                            # leaflet.marker([lat, lon], {"icon": icon}).addTo(mymap)
+                        except:
+                            document["debugme"].innerHTML=station
         if pickkey in geofixes:
             document["debugme"].innerHTML=pickkey
             showText(geofixes[pickkey])
