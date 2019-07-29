@@ -58,6 +58,7 @@ def showText(owmfix,
 
         
 async def queueData():
+    global geofixes
     """Get position from window.navigator.geolocation and put marker on the
     map.
     """
@@ -83,12 +84,13 @@ async def queueData():
         #     #enumOwmatm = 3,
         #     #enumOwmwspd = 4,
         #     #enumOwmwdir=5
-        #     geofixes[station]=[
-        #         lat,lon,float(properties["temp"]),float(properties["pres_"+language]),
-        #         float(properties["speed"]),float(properties["bearing"]),timeOfFix 
-        #     ]
+        geofixes[station]=[
+                 lat,lon,float(properties["temp"]),float(properties["pres_"+language]),
+                 float(properties["speed"]),float(properties["bearing"]),timeOfFix 
+        ]
         if (picklat-4.0<lat<picklat+4.0) and (picklon-4.0<lon<picklon+4.0):
             pickkey = station
+            
         #
         # Put marker on map
         #leaflet.marker([lat, lon], {"icon": icon}).addTo(mymap)
