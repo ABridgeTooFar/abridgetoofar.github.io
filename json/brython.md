@@ -101,8 +101,9 @@ async def queueData():
                         except:
                             document["debugme"].innerHTML=station
                         """
-        if pickkey in geofixes:        
-            showText(geofixes[pickkey])
+        if pickkey in geofixes:
+            document["debugme"].innerHTML=pickkey
+            #showText(geofixes[pickkey])
         else:
             document["debugme"].innerHTML="No station nearby"
     
