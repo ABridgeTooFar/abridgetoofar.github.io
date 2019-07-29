@@ -33,7 +33,7 @@ from datetime import datetime
 import json
 from browser import aio
 
-geofixes=[[0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]]
+geofixes=dict()
 
 feeds = 0;
 def showText(owmfix,
