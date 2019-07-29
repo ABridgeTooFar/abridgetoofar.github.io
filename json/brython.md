@@ -60,46 +60,46 @@ def showText(owmfix,
         
 async def queueData():
     global geofixes
-    """Get position from window.navigator.geolocation and put marker on the
-    map.
+    """Get position from window.navigator.geolocation and put marker on the map.
     """
     url = "https://geo.weather.gc.ca/geomet?service=WFS&version=2.0.0&request=GetFeature&typename=CURRENT_CONDITIONS&OUTPUTFORMAT=GeoJSON"
     req = await aio.get(url)
     data = json.loads(req.data)
-    language="en"
-    picklat = 47.54
-    picklon = -54.47
-    pickkey=""
-    for feature in data["features"]: 
-        properties = feature["properties"]
-        #if not all([key in properties for key in ["station_en","timestamp","temp","pres_en","speed","bearing"]]):
-        #    continue
-        station = properties["station_en"];
-        try:
-            #if station:
-            geometry = feature["geometry"]
-            lon, lat = [float(v) for v in geometry["coordinates"]]
-            #   timeOfFix = properties["timestamp"]
-            #     #enumOwmlat = 0,
-            #     #enumOwmlon = 1,
-            #     #enumOwmtemp = 2,
-            #     #enumOwmatm = 3,
-            #     #enumOwmwspd = 4,
-            #     #enumOwmwdir=5
-            #geofixes[station]=[
-            #         lat, lon, float(properties["temp"]) ,float(properties["pres_"+language]),
-            #         float(properties["speed"]), float(properties["bearing"]), timeOfFix 
-            #]
-            if (picklat-4.0<lat<picklat+4.0) and (picklon-4.0<lon<picklon+4.0):
-                pickkey = station
-            #
-            # Put marker on map
-            #leaflet.marker([lat, lon], {"icon": icon}).addTo(mymap)
-        except:
-            document["debug"].innerHTML=station
-
-    if pickkey in geofixes:        
-        pass #showText(geofixes[pickkey])
+    document["debug"].innerHTML="Received Data"
+    if data and ("features' in data):
+        pickkey = ""
+        picklat = 47.54
+        picklon = -54.47
+        for feature in data["features"]: 
+            if all([key in feature for key in ["properties","geometry"]]): 
+                language="en"
+                properties=feature["properties"]
+                geometry=feature["geometry"]
+                if all([(key in properties) for key in ["station_en","timestamp","temp","pres_en","speed","bearing"] ]):
+                    if "coordinates" in geometry:
+                        station = properties["station_en"];
+                        timeOfFix = properties["timestamp"]
+                        try:
+                            lon, lat = [float(v) for v in geometry["coordinates"] ]
+                            #     #enumOwmlat = 0,
+                            #     #enumOwmlon = 1,
+                            #     #enumOwmtemp = 2,
+                            #     #enumOwmatm = 3,
+                            #     #enumOwmwspd = 4,
+                            #     #enumOwmwdir=5
+                            geofixes[station]=[
+                            #         lat, lon, float(properties["temp"]) ,float(properties["pres_"+language]),
+                            #         float(properties["speed"]), float(properties["bearing"]), timeOfFix 
+                            ]
+                            if (picklat-4.0<lat<picklat+4.0) and (picklon-4.0<lon<picklon+4.0):
+                                pickkey = station
+                            #
+                            # Put marker on map
+                            #leaflet.marker([lat, lon], {"icon": icon}).addTo(mymap)
+                        except:
+                            document["debug"].innerHTML=station
+        if pickkey in geofixes:        
+            pass #showText(geofixes[pickkey])
 
 async def main():
     await queueData()
