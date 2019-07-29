@@ -91,9 +91,9 @@ async def queueData():
                 pickkey = station
             #
             # Put marker on map
-            #leaflet.marker([lat, long], {"icon": icon}).addTo(mymap)
+            #leaflet.marker([lat, lon], {"icon": icon}).addTo(mymap)
     if pickkey in geofixes:        
-        showText(geofixes[pickkey])
+        pass #showText(geofixes[pickkey])
 
 async def main():
     await queueData()
