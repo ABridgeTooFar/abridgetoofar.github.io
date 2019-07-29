@@ -190,10 +190,11 @@ async def show_iss_pos():
     iss_url = "https://geo.weather.gc.ca/geomet?service=WFS&version=2.0.0&request=GetFeature&typename=CURRENT_CONDITIONS&filter=<Filter><PropertyIsEqualTo><PropertyName>name</PropertyName><Literal>Deer Lake</Literal></PropertyIsEqualTo></Filter>&OUTPUTFORMAT=GeoJSON"
     req = await aio.get(iss_url)
     data = json.loads(req.data)
-    #position = data["features"][0]["properties"]["geometry"]
-    #lat, long = [float(v) for v in position["coordinates"]]
-    #
-    document["coords"].text = " ".join(data.keys() if data else ["Error requesting data"])#f"Latitude: {lat:.2f} Longitude: {long:.2f}"
+    for feature in data["features"]: 
+        #properties = feature["properties"]
+        geometry = feature["geometry"]
+        lat, long = [float(v) for v in geometry["coordinates"]]
+    document["coords"].text = f"Latitude: {lat:.2f} Longitude: {long:.2f}"
     #
     # Put marker on map
     #leaflet.marker([lat, long], {"icon": icon}).addTo(mymap)
