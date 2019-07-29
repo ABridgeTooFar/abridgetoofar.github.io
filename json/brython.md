@@ -75,7 +75,7 @@ async def queueData():
         station = properties["station_"+language];
         if station:
             geometry = feature["geometry"]
-            lat, long = [float(v) for v in geometry["coordinates"]]
+            lon, lat = [float(v) for v in geometry["coordinates"]]
             timeOfFix = properties["timestamp"]
             #enumOwmlat = 0,
             #enumOwmlon = 1,
@@ -84,10 +84,10 @@ async def queueData():
             #enumOwmwspd = 4,
             #enumOwmwdir=5
             geofixes[station]=[
-                lat,long,float(properties["temp"]),float(properties["pres_en"]),
+                lat,lon,float(properties["temp"]),float(properties["pres_"+language]),
                 float(properties["speed"]),float(properties["bearing"]),timeOfFix 
             ]
-            if picklat-4.0<lat<picklat+4.0 and picklon-4.0<long<picklon+4.0:
+            if (picklat-4.0<lat<picklat+4.0) and (picklon-4.0<lon<picklon+4.0):
                 pickkey = station
             #
             # Put marker on map
