@@ -63,11 +63,11 @@ async def queueData():
     req = await aio.get(url)
     data = json.loads(req.data)
     document["debugme"].innerHTML="Received Data"
-    """
     if data and ("features' in data):
         pickkey = ""
         picklat = 47.54
         picklon = -54.47
+        """
         for feature in data["features"]: 
             if all([key in feature for key in ["properties","geometry"]]): 
                 language="en"
@@ -96,9 +96,11 @@ async def queueData():
                             #leaflet.marker([lat, lon], {"icon": icon}).addTo(mymap)
                         except:
                             document["debugme"].innerHTML=station
+        """
         if pickkey in geofixes:        
-            pass #showText(geofixes[pickkey])
-    """
+            showText(geofixes[pickkey])
+        else:
+            document["debugme"].innerHTML="No station nearby"
     
 async def main():
     while True:
