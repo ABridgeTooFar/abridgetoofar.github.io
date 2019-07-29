@@ -18,7 +18,7 @@ Wind speed: <input type="number" id="geowspd" name="geowspd" value = "0.0" /> Di
 <!--  src="https://geo.weather.gc.ca/geomet?service=WFS&version=2.0.0&request=GetFeature&typename=CURRENT_CONDITIONS&filter=<Filter><PropertyIsEqualTo><PropertyName>name</PropertyName><Literal>Deer Lake</Literal></PropertyIsEqualTo></Filter>&OUTPUTFORMAT=GeoJSON">
 -->
 <script type='application/json'>
-var owmfixes=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+var jsonpfixes=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
 </script>
 
 
@@ -32,6 +32,8 @@ import math
 from datetime import datetime
 import json
 from browser import aio
+
+geofixes=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
 
 # paramters of graph
 nx = 360
@@ -110,8 +112,8 @@ def UpdateFig1(
     # generate the source data
     queue=[]
     owmfix = None
-    while len(window.owmfixes)>0:
-        owmfix=window.owmfixes.pop(0)
+    while len(geofixes)>0:
+        owmfix=geofixes.pop(0)
         queue.append([
             0.1*owmfix[enumOwmatm],
             owmfix[enumOwmtemp]-273.15,
@@ -197,7 +199,7 @@ async def Every10s():
     #enumOwmatm = 3,
     #enumOwmwspd = 4,
     #enumOwmwdir=5
-    window.owmfixes.push([lat,long,float(properties["temp"]),float(properties["press_en"]),
+    geofixes.push( [lat,long,float(properties["temp"]),float(properties["press_en"]),
         float(properties["speed"]),float(properties["bearing"])])
     #
     # Put marker on map
