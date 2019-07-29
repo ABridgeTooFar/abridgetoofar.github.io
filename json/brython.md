@@ -5,6 +5,7 @@ title: AJAX or Bust
 <h1>Data Transfer without an API key</h1>
 
 <div id="mapid"></div>
+<div id="debug"></div>
 
 <form name="geofix" id="geofix">
 Sequence: <input type="number" id="geoseq" name="geoseq" value = "0" /> As of: <input id="geoasof" name="geoasof" value = "" />  <br />
@@ -74,26 +75,29 @@ async def queueData():
         #if not all([key in properties for key in ["station_en","timestamp","temp","pres_en","speed","bearing"]]):
         #    continue
         station = properties["station_en"];
-        #if station:
-        geometry = feature["geometry"]
-        lon, lat = [float(v) for v in geometry["coordinates"]]
-        #   timeOfFix = properties["timestamp"]
-        #     #enumOwmlat = 0,
-        #     #enumOwmlon = 1,
-        #     #enumOwmtemp = 2,
-        #     #enumOwmatm = 3,
-        #     #enumOwmwspd = 4,
-        #     #enumOwmwdir=5
-        #geofixes[station]=[
-        #         lat, lon, float(properties["temp"]) ,float(properties["pres_"+language]),
-        #         float(properties["speed"]), float(properties["bearing"]), timeOfFix 
-        #]
-        if (picklat-4.0<lat<picklat+4.0) and (picklon-4.0<lon<picklon+4.0):
-            pickkey = station
-            
-        #
-        # Put marker on map
-        #leaflet.marker([lat, lon], {"icon": icon}).addTo(mymap)
+        try:
+            #if station:
+            geometry = feature["geometry"]
+            lon, lat = [float(v) for v in geometry["coordinates"]]
+            #   timeOfFix = properties["timestamp"]
+            #     #enumOwmlat = 0,
+            #     #enumOwmlon = 1,
+            #     #enumOwmtemp = 2,
+            #     #enumOwmatm = 3,
+            #     #enumOwmwspd = 4,
+            #     #enumOwmwdir=5
+            #geofixes[station]=[
+            #         lat, lon, float(properties["temp"]) ,float(properties["pres_"+language]),
+            #         float(properties["speed"]), float(properties["bearing"]), timeOfFix 
+            #]
+            if (picklat-4.0<lat<picklat+4.0) and (picklon-4.0<lon<picklon+4.0):
+                pickkey = station
+            #
+            # Put marker on map
+            #leaflet.marker([lat, lon], {"icon": icon}).addTo(mymap)
+        except:
+            document["debug"].innerHTML=station
+
     if pickkey in geofixes:        
         pass #showText(geofixes[pickkey])
 
