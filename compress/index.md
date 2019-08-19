@@ -8,7 +8,7 @@
 <form name="analyze" id="analyze" action="analyze.html" method="GET">
     <div name="stations" id="stations"></div><br />
 
-    <input type="hidden" id="csv" name="csv" disabled="1" readonly="1" style="display:'none';" value="" /></form>
+    <input type="hidden" id="csv" name="csv" disabled="1" readonly="1" style="display:'none';" value="" />
 </form>
 
 <script>
