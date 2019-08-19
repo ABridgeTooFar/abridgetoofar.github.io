@@ -27,7 +27,7 @@ LZString = window.LZString
 
 async def refreshPageSize():
     matrix = {}
-    url2CanadianWeather = "https://dd.meteo.gc.ca/nowcasting/matrices/SCRIBE.NWCSTG.08.17.06Z.n.Z"
+    url2CanadianWeather = "https://anonymous:anonymous@dd.meteo.gc.ca/nowcasting/matrices/SCRIBE.NWCSTG.08.17.06Z.n.Z"
     request = await aio.get(url2CanadianWeather)#,format="application/json")
     matrix = LZString.decompress(request.data)
     document["csv"].value=matrix
